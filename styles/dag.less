@@ -1,0 +1,80 @@
+my-dag {
+  display: block;
+  .jsplumb-endpoint {
+    svg {
+      overflow: visible;
+    }
+    circle {
+      fill: white;
+      r: 2px;
+      stroke-width: 8px;
+    }
+    &-anchor-sourceAnchor circle {
+      stroke: green;
+    }
+    &-anchor-transformAnchor circle {
+      stroke: purple;
+    }
+    &-anchor-sinkAnchor circle {
+      stroke: orange;
+    }
+  }
+  .diagram-container {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    background: #eee;
+    overflow: hidden;
+
+    #dag-container {
+      height: inherit;
+      width: inherit;
+      position: absolute;
+      transform-origin: left center;
+
+      .box {
+        position: absolute;
+        height: 66px;
+        width: 105px;
+        cursor: pointer;
+
+        .dag-node {
+          margin: 0 auto;
+          backgroun-clip: border-box;
+          height: 46px;
+          width: 56px;
+          border-radius: 5px;
+
+          &.source {
+            border: 2px solid green;
+            ~.label {
+              color: green;
+            }
+          }
+          &.transform {
+            border: 2px solid purple;
+            ~.label {
+              color: purple;
+            }
+          }
+          &.sink {
+            border: 2px solid orange;
+            ~.label {
+              color: orange;
+            }
+          }
+        }
+        .label {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  .fa.fa-spin.fa-refresh {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
