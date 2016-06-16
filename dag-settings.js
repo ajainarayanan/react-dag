@@ -6,9 +6,10 @@ export const defaultSettings = {
   Connector : [ 'Flowchart', {gap: 6, stub: [10, 15], alwaysRespectStubs: true} ],
   ConnectionsDetachable: true
 };
+
 export const connectorStyle = {
-  strokeStyle: '#666e82',
-  fillStyle: '#666e82',
+  stroke: 'black',
+  strokeWidth: 2,
   radius: 5,
   lineWidth: 2
 };
@@ -27,8 +28,8 @@ export const commonSettings = {
   endpoint:'Dot',
   maxConnections: -1, // -1 means unlimited connections
   paintStyle: {
-    strokeStyle: '#666e82',
-    fillStyle: '#666e82',
+    stroke: 'black',
+    fill: 'black',
     radius: 5,
     lineWidth: 3
   },

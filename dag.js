@@ -7,7 +7,6 @@ import uuid from 'node-uuid';
 require('./styles/dag.less');
 require('jsPlumb');
 
-var dagre = require('dagre');
 var classnames = require('classname');
 
 export class DAG extends Component {
