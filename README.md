@@ -24,7 +24,7 @@ This is a base implementation of wrapping jsplumb with react + redux to be more 
     }
   ```
 
-  #### Props
+#### Props
   - `settings` - Settings to be used for JsPlumb. Check out `dag-settings.js` for base settings that are available.
   ###### Note
     The `settings` prop is like either or - Either you provide the entire settings for the DAG or take the base settings. I am still yet to work on how to achieve granularity (or mixin) multiple different settings.
