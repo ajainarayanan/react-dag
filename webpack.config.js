@@ -5,7 +5,7 @@ var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 module.exports = {
   context: __dirname,
   entry: {
-    'dag': './dag.js',
+    'react-dag': './dag.js',
     'vendor': ['react', 'react-dom', 'redux', 'lodash', 'classname']
   },
   module: {
@@ -41,7 +41,7 @@ module.exports = {
   output: {
     filename: './[name].js',
     path: __dirname + '/dist',
-    library: 'dag',
+    library: 'reactDag',
     libraryTarget: 'umd'
   },
   externals: {

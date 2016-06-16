@@ -1,8 +1,8 @@
 {
-  "name": "dag",
+  "name": "react-dag",
   "version": "1.0.0",
-  "description": "A generic dag that is drawn with a list of nodes and connections",
-  "main": "dist/dag.js",
+  "description": "This is a base implementation of wrapping jsplumb with react + redux to be more usable in a react based environment",
+  "main": "dist/react-dag.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
