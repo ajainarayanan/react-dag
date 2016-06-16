@@ -10,8 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "classname": "0.0.0",
-    "dagre": "^0.7.4",
-    "jsplumb": "2.0.7",
+    "jsplumb": "sporritt/jsPlumb#2.2.0",
     "lodash": "^4.13.1",
     "node-uuid": "1.4.7",
     "react": "15.0.1",

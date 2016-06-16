@@ -1,6 +1,5 @@
 var webpack = require('webpack');
 var path = require('path');
-var LiveReloadPlugin = require('webpack-livereload-plugin');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = {
@@ -11,13 +10,6 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        test: require.resolve('jsPlumb'),
-        loaders: [
-          'imports?this=>window',
-          'script'
-        ]
-      },
       {
         test: /node_module\/dagre\/dist\/dagre.core.js/,
         loaders: [
@@ -68,6 +60,16 @@ module.exports = {
     'classname': 'classname'
   },
   plugins: [
-    new LodashModuleReplacementPlugin
+    new LodashModuleReplacementPlugin,
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+        drop_console: false,
+        dead_code: true
+      },
+      output: {
+        comments: false
+      }
+    })
   ]
 };
