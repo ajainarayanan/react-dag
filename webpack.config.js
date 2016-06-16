@@ -68,16 +68,6 @@ module.exports = {
     'classname': 'classname'
   },
   plugins: [
-    // new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js", Infinity),
-    new LodashModuleReplacementPlugin,
-    // new webpack.optimize.OccurenceOrderPlugin,
-    // new LiveReloadPlugin(),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false,
-    //     drop_console: false,
-    //     dead_code: true
-    //   }
-    // })
+    new LodashModuleReplacementPlugin
   ]
 };
