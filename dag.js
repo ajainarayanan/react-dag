@@ -5,7 +5,7 @@ import {getSettings} from './dag-settings';
 import uuid from 'node-uuid';
 
 require('./styles/dag.less');
-require('jsPlumb');
+import jsPlumb from 'jsPlumb';
 
 var classnames = require('classname');
 
@@ -161,12 +161,6 @@ export class DAG extends Component {
   }
   cleanUpGraph() {
     let {nodes, connections} = this.store.getState();
-    let parent = document.querySelector(`#${this.state.componentId} .diagram-container`);
-    let parentDimension = {
-      height: parent.getBoundingClientRect().height,
-      width: parent.getBoundingClientRect().width
-    };
-
     this.store.dispatch({
       type: 'CLEANUP-GRAPH',
       payload: {nodes, connections}
@@ -174,7 +168,11 @@ export class DAG extends Component {
 
     this.store.dispatch({
       type: 'FIT-TO-SCREEN',
-      payload: {nodes, connections, parentDimension}
+      payload: {
+        nodes,
+        connections,
+        parentSelector: `#${this.state.componentId} .diagram-container`
+      }
     });
     setTimeout(this.instance.repaintEverything.bind(this));
   }
