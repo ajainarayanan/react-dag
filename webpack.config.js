@@ -10,8 +10,7 @@ let plugins = [
 let webpackconfig = {
   context: __dirname,
   entry: {
-    'react-dag': './dag.js',
-    'vendor': ['react', 'react-dom', 'redux', 'lodash', 'classname']
+    'react-dag': './dag.js'
   },
   module: {
     loaders: [
@@ -85,7 +84,8 @@ if (prod) {
 } else {
   webpackconfig = Object.assign({}, webpackconfig, {
     entry: {
-      'index': './dev/index.js'
+      'index': './dev/index.js',
+      'vendor': ['react', 'react-dom', 'redux', 'lodash', 'classname']
     },
     output: {
       filename: './[name].js',
