@@ -1,8 +1,13 @@
+'use strict';
 var webpack = require('webpack');
 var path = require('path');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
-module.exports = {
+let prod = process.env.NODE_ENV === 'production';
+let plugins = [
+  new LodashModuleReplacementPlugin
+];
+let webpackconfig = {
   context: __dirname,
   entry: {
     'react-dag': './dag.js',
@@ -38,29 +43,34 @@ module.exports = {
       }
     ]
   },
-  output: {
-    filename: './[name].js',
-    path: __dirname + '/dist',
-    library: 'reactDag',
-    libraryTarget: 'umd'
-  },
-  externals: {
-    'react': {
-      root: 'React',
-      commonjs2: 'react',
-      commonjs: 'react',
-      amd: 'react'
+  plugins
+};
+
+if (prod) {
+  webpackconfig = Object.assign({}, webpackconfig, {
+    output: {
+      filename: './[name].js',
+      path: __dirname + '/dist',
+      library: 'reactDag',
+      libraryTarget: 'umd'
     },
-    'react-dom': {
-      root: 'ReactDOM',
-      commonjs2: 'react-dom',
-      commonjs: 'react-dom',
-      amd: 'react-dom'
+    externals: {
+      'react': {
+        root: 'React',
+        commonjs2: 'react',
+        commonjs: 'react',
+        amd: 'react'
+      },
+      'react-dom': {
+        root: 'ReactDOM',
+        commonjs2: 'react-dom',
+        commonjs: 'react-dom',
+        amd: 'react-dom'
+      },
+      'classname': 'classname'
     },
-    'classname': 'classname'
-  },
-  plugins: [
-    new LodashModuleReplacementPlugin,
+  });
+  plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
@@ -71,5 +81,18 @@ module.exports = {
         comments: false
       }
     })
-  ]
-};
+  );
+} else {
+  webpackconfig = Object.assign({}, webpackconfig, {
+    entry: {
+      'index': './dev/index.js'
+    },
+    output: {
+      filename: './[name].js',
+      path: __dirname + '/dist'
+    }
+  });
+}
+
+
+module.exports = webpackconfig;
