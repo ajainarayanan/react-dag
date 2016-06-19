@@ -4,6 +4,8 @@ import {configureStore} from './dag-store';
 import {getSettings} from './dag-settings';
 import uuid from 'node-uuid';
 
+import NodesList from './components/NodesList/NodesList';
+
 require('./styles/dag.less');
 import jsPlumb from 'jsPlumb';
 
@@ -192,14 +194,7 @@ export class DAG extends Component {
     const loadNodes = () => {
       if (!this.state.graph.loading) {
         return (
-          this.state.nodes.map(function(node) {
-            return (
-                <div className="box text-center" id={node.id} key={node.id} style={node.style}>
-                  <div className={classnames({'dag-node': true, [node.type]: true})}></div>
-                    <div className="label">{node.label}</div>
-                </div>
-              )
-          })
+          <NodesList nodes={this.state.nodes}/>
         );
       }
     };
