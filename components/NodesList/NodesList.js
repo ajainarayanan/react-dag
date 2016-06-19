@@ -12,7 +12,7 @@ export default class NodesList extends Component {
   }
   render() {
     return (
-      <div>
+      <DAG-NodesList>
         {
           this.state
             .nodes
@@ -27,7 +27,7 @@ export default class NodesList extends Component {
               )
             })
         }
-      </div>
+      </DAG-NodesList>
     );
   }
 }

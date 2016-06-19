@@ -4,7 +4,9 @@
   "description": "This is a base implementation of wrapping jsplumb with react + redux to be more usable in a react based environment",
   "main": "dist/react-dag.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-build": "webpack --watch -d",
+    "prod-build": "NODE_ENV=production webpack -p"
   },
   "author": "",
   "license": "ISC",
