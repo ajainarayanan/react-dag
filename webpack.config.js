@@ -69,7 +69,7 @@ if (prod) {
       'classname': 'classname'
     },
   });
-  plugins.push(
+  webpackconfig.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
