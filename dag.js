@@ -148,7 +148,7 @@ export class DAG extends Component {
         this.renderGraph();
         this.cleanUpGraph();
       }
-    }, 1000);
+    }, 600);
   }
   addNode(node) {
     let {type, label} = node;

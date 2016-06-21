@@ -12,6 +12,15 @@ export default class Node extends Component {
       id
     };
   }
+  componentWillReceiveProps(newProps) {
+    const { style, type, label, id } = newProps;
+    this.setState({
+      style,
+      type,
+      label,
+      id
+    });
+  }
   render() {
     return (
       <DAG-Node>

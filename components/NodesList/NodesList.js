@@ -10,6 +10,13 @@ export default class NodesList extends Component {
       nodes: nodes.map( node => Object.assign({}, node, { id: node.id || uuid.v4() }) )
     };
   }
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      nodes: newProps.nodes.map(
+        node => Object.assign({}, node, { id: node.id || uuid.v4() })
+      )
+    });
+  }
   render() {
     return (
       <DAG-NodesList>
