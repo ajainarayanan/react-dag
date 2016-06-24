@@ -117,26 +117,29 @@ export class DAG extends Component {
       });
   }
   addEndpoints() {
-    this.store.getState()
-      .nodes
-      .forEach(node => {
-        if (this.endpoints.indexOf(node.id) !== -1) {
+    let nodes = this.store.getState().nodes;
+    let nodesId = nodes.map(node => node.id);
+    this.endpoints = this.endpoints.filter(endpoint => {
+      return nodesId.indexOf(endpoint) !== -1
+    });
+
+    this.instance.deleteEveryEndpoint();
+    this.instance.detachEveryConnection();
+
+    nodes.forEach(node => {
+      let type = node.type;
+      switch(type) {
+        case 'source':
+          this.instance.addEndpoint(node.id, this.settings.source, {uuid: node.id});
           return;
-        }
-        this.endpoints.push(node.id);
-        let type = node.type;
-        switch(type) {
-          case 'source':
-            this.instance.addEndpoint(node.id, this.settings.source, {uuid: node.id});
-            return;
-          case 'sink':
-            this.instance.addEndpoint(node.id, this.settings.sink, {uuid: node.id});
-            return;
-          default:
-            this.instance.addEndpoint(node.id, this.settings.transformSource, {uuid: `Left${node.id}`});
-            this.instance.addEndpoint(node.id, this.settings.transformSink, {uuid: `Right${node.id}`});
-        }
-      });
+        case 'sink':
+          this.instance.addEndpoint(node.id, this.settings.sink, {uuid: node.id});
+          return;
+        default:
+          this.instance.addEndpoint(node.id, this.settings.transformSource, {uuid: `Left${node.id}`});
+          this.instance.addEndpoint(node.id, this.settings.transformSink, {uuid: `Right${node.id}`});
+      }
+    });
   }
   componentDidMount() {
     this.setState(this.store.getState());
