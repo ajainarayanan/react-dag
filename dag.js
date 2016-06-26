@@ -15,11 +15,12 @@ export class DAG extends Component {
   constructor(props) {
     super(props);
     this.props = props;
-    let {data, additionalReducersMap, middlewares = []} = props;
+    let {data, additionalReducersMap, enhancers, middlewares = []} = props;
     this.store = configureStore(
       data,
       additionalReducersMap,
-      [...middlewares]
+      [...middlewares],
+      [...enhancers]
     );
     this.state = this.store.getState();
     if (props.data) {
