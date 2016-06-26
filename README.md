@@ -4,7 +4,7 @@ This is a base implementation of wrapping jsplumb with react + redux to be more 
 
 #### Install
 
-`npm install git://github.com/ajainarayanan/react-dag.git[#master]`
+`npm install git://github.com/ajainarayanan/react-dag.git#master`
 
   (As of now I have not yet published it to npm YET! Will do soon.)
 
@@ -17,6 +17,7 @@ This is a base implementation of wrapping jsplumb with react + redux to be more 
         return (
           <DAG settings={this.settings}
               data={this.data}
+              enhancers={this.enhancers}
               additionalReducersMap={this.additionalReducersMap}
               middlewares={this.middlewares}/>
         );
@@ -30,6 +31,8 @@ This is a base implementation of wrapping jsplumb with react + redux to be more 
     The `settings` prop is like either or - Either you provide the entire settings for the DAG or take the base settings. I am still yet to work on how to achieve granularity (or mixin) multiple different settings.
 
   - `data` - Is the initial state of the DAG. Could be used to render the DAG right away if the data is already available (instead of constructing the DAG one node at a time).
+
+  - `enhancers` - Are the list of enhancers you would want to add to the `dag-store`. To read more about enhancers please check the [documentation here](https://github.com/reactjs/redux/blob/master/docs/Glossary.md#store-enhancer)
 
   - `additionalReducersMap` - The DAG comes with a base reducer that does some base operations. If you want additional reducers to be used for any property of the store you could pass in the map and the reducers would get `reduce`'d (as in executed one at a time. Something like reduce reducer)
 
@@ -63,4 +66,5 @@ This is a base implementation of wrapping jsplumb with react + redux to be more 
       ```
     ##### Note
       This is a little crude as of now. Will have to see if I can use this as a generic functionality for any store.
-  - `middlewares` - Simillar to `additionalReducers` you could pass in additional middlewares that you want to add based on your reducers.
+
+  - `middlewares` - Similar to `additionalReducers` you could pass in additional middlewares that you want to add based on your reducers.
