@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-build": "webpack --watch -d",
-    "prod-build": "NODE_ENV=production webpack -p"
+    "prod-build": "NODE_ENV=production webpack -p",
+    "lib-test-build": "NODE_ENV=libtest webpack -d"
   },
   "author": "",
   "license": "ISC",
