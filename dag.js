@@ -202,19 +202,24 @@ export class DAG extends Component {
         );
       }
     };
+    const getStyles = () => {
+      let style = {
+        transform : ''
+      };
+      if (this.state.graph.scale) {
+        style.transform += `scale(${this.state.graph.scale})`;
+        this.instance.setZoom(this.state.graph.scale);
+      }
+      if (this.state.graph.translate) {
+        style.transform += `translate(${this.state.graph.translate})`;
+      }
+      return style;
+    };
     return (
       <my-dag id={this.state.componentId}>
         {this.props.children}
         <div className="diagram-container">
-          <div id="dag-container" style={
-            {
-              transform: 'scale(' +
-              this.state.graph.scale +
-              ') ' +
-              'translate( ' +
-              this.state.graph.translate +
-              ')'
-           }}>
+          <div id="dag-container" style={getStyles()}>
             {loadContent()}
             {loadNodes()}
           </div>
