@@ -7,7 +7,7 @@ import uuid from 'node-uuid';
 import NodesList from './components/NodesList/NodesList';
 
 require('./styles/dag.less');
-import jsPlumb from 'jsPlumb';
+var jsPlumb = require('jsPlumb').jsPlumb;
 
 var classnames = require('classname');
 
