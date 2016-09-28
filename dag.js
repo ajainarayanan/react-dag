@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import {configureStore} from './dag-store';
 import {getSettings} from './dag-settings';
 import uuid from 'node-uuid';
+import jsPlumb from 'jsPlumb';
+
 
 import NodesList from './components/NodesList/NodesList';
 
 require('./styles/dag.less');
-var jsPlumb = require('jsPlumb').jsPlumb;
 
 var classnames = require('classname');
 
