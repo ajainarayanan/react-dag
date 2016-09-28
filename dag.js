@@ -154,15 +154,17 @@ export class DAG extends Component {
       }
     }, 600);
   }
-  addNode(node) {
-    let {type, label} = node;
+  addNode(node, props) {
+    let {type, label} = node,
+	p = {
+	  type, 
+  	  label,
+          id : type + Date.now().toString().slice(8)	  
+	};
+
     this.store.dispatch({
       type: 'ADD-NODE',
-      payload: {
-        type,
-        label,
-        id: type + Date.now().toString().slice(8)
-      }
+      payload: Object.assign({}, p, props);
     });
   }
   cleanUpGraph() {
