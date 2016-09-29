@@ -157,15 +157,15 @@ export class DAG extends Component {
   }
   addNode(node, props) {
     let {type, label} = node,
-	p = {
-	  type, 
-  	  label,
+        f = Object.assign({}, props, {
+          type, 
+          label,
           id : type + Date.now().toString().slice(8)	  
-	};
-
+        });
+        
     this.store.dispatch({
       type: 'ADD-NODE',
-      payload: Object.assign({}, p, props);
+      payload: f
     });
   }
   cleanUpGraph() {
