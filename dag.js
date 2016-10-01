@@ -157,7 +157,7 @@ export class DAG extends Component {
   }
   addNode(node, props) {
     let {type, label} = node,
-        f = Object.assign({}, props, {
+        nodeProps = Object.assign({}, props, {
           type, 
           label,
           id : type + Date.now().toString().slice(8)	  
@@ -165,7 +165,7 @@ export class DAG extends Component {
         
     this.store.dispatch({
       type: 'ADD-NODE',
-      payload: f
+      payload: nodeProps
     });
   }
   cleanUpGraph() {
