@@ -2,22 +2,24 @@
   "name": "react-dag",
   "version": "2.0.0",
   "description": "This is a base implementation of wrapping jsplumb with react + redux to be more usable in a react based environment",
-  "main": "dist/react-dag.js",
+  "main": "./dist/react-dag.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-build": "webpack --watch -d",
+    "dev-build-watch": "webpack --watch -d",
+    "dev-build": "webpack -d",
     "prod-build": "NODE_ENV=production webpack -p",
     "lib-test-build": "NODE_ENV=libtest webpack -d"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-runtime": "^6.11.6",
     "classname": "0.0.0",
-    "jsplumb": "sporritt/jsPlumb#2.2.0",
+    "jsplumb": "git://github.com/sporritt/jsPlumb#2.2.0",
     "lodash": "^4.13.1",
     "node-uuid": "1.4.7",
-    "react": "15.0.1",
-    "react-dom": "15.0.1",
+    "react": "15.3.2",
+    "react-dom": "15.3.2",
     "redux": "3.5.1"
   },
   "devDependencies": {

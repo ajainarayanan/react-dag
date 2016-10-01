@@ -4,13 +4,10 @@ import uuid from 'node-uuid';
 let nodes = (state = [], action = {}) => {
   switch(action.type) {
     case 'ADD-NODE':
+      let nodeProps = Object.assign({}, action.payload, { id: uuid.v4() }); 
       return [
         ...state,
-        {
-          id: uuid.v4(),
-          label: action.payload.label,
-          type: action.payload.type
-        }
+        nodeProps
       ];
     case 'UPDATE_NODE':
       return state.map(node => {

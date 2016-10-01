@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import {configureStore} from './dag-store';
 import {getSettings} from './dag-settings';
 import uuid from 'node-uuid';
+import jsPlumb from 'jsPlumb';
+
 
 import NodesList from './components/NodesList/NodesList';
 
 require('./styles/dag.less');
-var jsPlumb = require('jsPlumb').jsPlumb;
 
 var classnames = require('classname');
 
@@ -154,15 +155,17 @@ export class DAG extends Component {
       }
     }, 600);
   }
-  addNode(node) {
-    let {type, label} = node;
+  addNode(node, props) {
+    let {type, label} = node,
+        nodeProps = Object.assign({}, props, {
+          type, 
+          label,
+          id : type + Date.now().toString().slice(8)	  
+        });
+        
     this.store.dispatch({
       type: 'ADD-NODE',
-      payload: {
-        type,
-        label,
-        id: type + Date.now().toString().slice(8)
-      }
+      payload: nodeProps
     });
   }
   cleanUpGraph() {
