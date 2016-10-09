@@ -1,12 +1,10 @@
-### react-dag
+## react-dag
 
 This is a base implementation of wrapping jsplumb with react + redux to be more usable in a react based environment.
 
 #### Install
 
-`npm install git://github.com/ajainarayanan/react-dag.git#master`
-
-  (As of now I have not yet published it to npm YET! Will do soon.)
+`npm install react-dag`
 
 #### Usage
   ```
@@ -38,31 +36,31 @@ This is a base implementation of wrapping jsplumb with react + redux to be more 
 
     For instance the store right now has a structure like,
       ```
-      {
-        nodes: nodesReducer,
-        connections: connectionsReducer,
-        graph: graphReducer
-      }
+    {
+      nodes: nodesReducer,
+      connections: connectionsReducer,
+      graph: graphReducer
+    }
       ```
       In addition to the the `nodesReducer` if there are additional reducers that you want to add then it could be passed in as something like this,
 
       ```
-      {
-        nodes: [myReducer1, sometherReducer2]
-      }
+    {
+      nodes: [myReducer1, sometherReducer2]
+    }
       ```
 
       Based on the additional reducer the above implementation of redux store's reducer becomes,
 
       ```
-      {
-        nodes: nodesReducers
-                .reduce((prev, curr) => curr.bind(null, prev(state, action), action))(),
-        connections: connectionsReducer
-                .reduce((prev, curr) => curr.bind(null, prev(state, action), action))(),
-        graph: graphReducer
-                .reduce((prev, curr) => curr.bind(null, prev(state, action), action))(),
-      }
+    {
+      nodes: nodesReducers
+              .reduce((prev, curr) => curr.bind(null, prev(state, action), action))(),
+      connections: connectionsReducer
+              .reduce((prev, curr) => curr.bind(null, prev(state, action), action))(),
+      graph: graphReducer
+              .reduce((prev, curr) => curr.bind(null, prev(state, action), action))(),
+    }
       ```
     ##### Note
       This is a little crude as of now. Will have to see if I can use this as a generic functionality for any store.
