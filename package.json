@@ -9,11 +9,11 @@
     "prod-build": "NODE_ENV=production webpack -p",
     "lib-test-build": "NODE_ENV=libtest webpack -d"
   },
-  "author": "",
+  "author": "ajainarayanan",
   "license": "ISC",
   "dependencies": {
     "classname": "0.0.0",
-    "jsplumb": "sporritt/jsPlumb#2.2.0",
+    "jsplumb": "git+https://github.com/sporritt/jsPlumb#2.2.0",
     "lodash": "^4.13.1",
     "node-uuid": "1.4.7",
     "react": "15.0.1",
@@ -47,5 +47,23 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.13.0",
     "webpack-livereload-plugin": "^0.8.1"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajainarayanan/react-dag.git"
+  },
+  "keywords": [
+    "react-dag",
+    "dag",
+    "jsplumb",
+    "reactjs",
+    "redux"
+  ],
+  "bugs": {
+    "url": "https://github.com/ajainarayanan/react-dag/issues"
+  },
+  "homepage": "https://github.com/ajainarayanan/react-dag"
 }
