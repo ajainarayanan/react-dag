@@ -1,11 +1,9 @@
-'use strict';
 var webpack = require('webpack');
-var path = require('path');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 let buildmode = process.env.NODE_ENV;
 let plugins = [
-  new LodashModuleReplacementPlugin
+  new LodashModuleReplacementPlugin()
 ];
 let webpackconfig = {
   context: __dirname,

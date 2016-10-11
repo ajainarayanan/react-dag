@@ -38,11 +38,11 @@ export const commonSettings = {
 export const sourceSettings = extend({
   isSource: true,
   connectorStyle: connectorStyle,
-  anchor: [ 0.5, 1, 1, 0, 26, -43, 'sourceAnchor']
+  anchor: [ 0.5, 1, 1, 0, 28, -41, 'sourceAnchor']
 }, commonSettings);
 export const sinkSettings = extend({
   isTarget: true,
-  anchor: [ 0.5, 1, -1, 0, -26, -43, 'sinkAnchor'],
+  anchor: [ 0.5, 1, -1, 0, -30, -41, 'sinkAnchor'],
   connectorStyle: connectorStyle
 }, commonSettings);
 
@@ -66,8 +66,8 @@ export function getSettings(isDisabled) {
 
   settings.transformSource = clone(settings.source);
   settings.transformSink = clone(settings.sink);
-  settings.transformSource.anchor = [ 0.5, 1, 1, 0, 26, -43, 'transformAnchor'];
-  settings.transformSink.anchor = [ 0.5, 1, -1, 0, -26, -43, 'transformAnchor'];
+  settings.transformSource.anchor = [ 0.5, 1, 1, 0, 28, -41, 'transformAnchor'];
+  settings.transformSink.anchor = [ 0.5, 1, -1, 0, -30, -41, 'transformAnchor'];
 
   return settings;
 }
