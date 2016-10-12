@@ -32,11 +32,7 @@ var webpackconfig = {
       {
         test: /\.js$/,
         loader: 'babel',
-        exclude: /node_modules/,
-        query: {
-          plugins: ['lodash'],
-          presets: ['react', 'es2015']
-        }
+        exclude: /node_modules/
       }
     ]
   },
