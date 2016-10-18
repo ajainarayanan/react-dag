@@ -1,6 +1,6 @@
 {
   "name": "react-dag",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "This is a base implementation of wrapping jsplumb with react + redux to be more usable in a react based environment",
   "main": "dist/react-dag.js",
   "scripts": {
