@@ -1,5 +1,6 @@
+/* @flow */
+
 import React , { Component } from 'react';
-import ReactDOM from 'react-dom';
 import {configureStore} from './dag-store';
 import {getSettings} from './dag-settings';
 import uuid from 'node-uuid';
@@ -7,12 +8,24 @@ import uuid from 'node-uuid';
 import NodesList from './components/NodesList/NodesList';
 
 require('./styles/dag.less');
-var jsPlumb = require('jsPlumb').jsPlumb;
-
-var classnames = require('classname');
-
+import jsPlumb from 'jsPlumb';
+type propType = {
+  children: Object,
+  data: Object,
+  additionalReducersMap: Object,
+  enhancers: Array<Object>,
+  middlewares: Array<Object>
+};
 export class DAG extends Component {
-  constructor(props) {
+  store: Object;
+  settings: Object;
+  instance: Object;
+  state: {
+    componentId: number,
+    graph: Object,
+    nodes: Array<Object>
+  };
+  constructor(props: propType) {
     super(props);
     this.props = props;
     let {data, additionalReducersMap, enhancers = [], middlewares = []} = props;
@@ -26,7 +39,6 @@ export class DAG extends Component {
     if (props.data) {
       this.toggleLoading(true);
     }
-    this.endpoints = [];
     if (props.settings) {
       this.settings = Object.assign({}, props.settings);
     } else {
@@ -46,7 +58,7 @@ export class DAG extends Component {
       this.instance.bind('connectionDetached', this.makeConnections.bind(this));
     });
   }
-  toggleLoading(loading) {
+  toggleLoading(loading: bool) {
     this.store.dispatch({
       type: 'LOADING',
       payload: {
@@ -78,7 +90,7 @@ export class DAG extends Component {
       }
     });
   }
-  makeConnections(info, originalEvent) {
+  makeConnections(info: Object, originalEvent: MouseEvent) {
     if (!originalEvent) { return; }
     let connections = this.instance
       .getConnections()
@@ -119,11 +131,6 @@ export class DAG extends Component {
   }
   addEndpoints() {
     let nodes = this.store.getState().nodes;
-    let nodesId = nodes.map(node => node.id);
-    this.endpoints = this.endpoints.filter(endpoint => {
-      return nodesId.indexOf(endpoint) !== -1
-    });
-
     this.instance.deleteEveryEndpoint();
     this.instance.detachEveryConnection();
 
@@ -154,7 +161,7 @@ export class DAG extends Component {
       }
     }, 600);
   }
-  addNode(node) {
+  addNode(node: Object) {
     let {type, label} = node;
     this.store.dispatch({
       type: 'ADD-NODE',

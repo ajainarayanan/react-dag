@@ -1,13 +1,11 @@
-'use strict';
 var webpack = require('webpack');
-var path = require('path');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
-let buildmode = process.env.NODE_ENV;
-let plugins = [
-  new LodashModuleReplacementPlugin
+var buildmode = process.env.NODE_ENV;
+var plugins = [
+  new LodashModuleReplacementPlugin()
 ];
-let webpackconfig = {
+var webpackconfig = {
   context: __dirname,
   entry: {
     'react-dag': './dag.js'
@@ -34,11 +32,7 @@ let webpackconfig = {
       {
         test: /\.js$/,
         loader: 'babel',
-        exclude: /node_modules/,
-        query: {
-          plugins: ['lodash'],
-          presets: ['react', 'es2015']
-        }
+        exclude: /node_modules/
       }
     ]
   },

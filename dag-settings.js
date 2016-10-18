@@ -1,3 +1,4 @@
+/* @flow */
 import _ from 'lodash';
 const extend = _.extend;
 const clone = _.clone;
@@ -46,8 +47,8 @@ export const sinkSettings = extend({
   connectorStyle: connectorStyle
 }, commonSettings);
 
-export function getSettings(isDisabled) {
-  var settings = {};
+export function getSettings(isDisabled: ?boolean = false) {
+  var settings: Object = {};
   if (isDisabled) {
     settings = {
       default: defaultSettings,

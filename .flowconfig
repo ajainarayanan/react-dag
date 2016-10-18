@@ -1,0 +1,7 @@
+[ignore]
+module.name_mapper='^\(.*\)\.less$' -> './LessModule.js.flow'
+[include]
+
+[libs]
+
+[options]
