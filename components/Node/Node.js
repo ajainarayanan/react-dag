@@ -1,8 +1,28 @@
+/* @flow */
+
 import React, { Component } from 'react';
-import classnames from 'classname';
+import classnames from 'classnames';
+require('./Node.scss');
+
+type propType = {
+  style: Object,
+  label: string,
+  id: string,
+  type: string,
+  onClick: (x: Object) => void
+};
 
 export default class Node extends Component {
-  constructor(props) {
+  state: {
+    style: Object,
+    label: string,
+    id: string,
+    type: string
+  };
+  static defaultProps = {
+    onClick: () => {}
+  };
+  constructor(props: propType) {
     super(props);
     const { style, type, label, id } = props;
     this.state = {
@@ -12,7 +32,7 @@ export default class Node extends Component {
       id
     };
   }
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: propType) {
     const { style, type, label, id } = newProps;
     this.setState({
       style,
@@ -23,14 +43,26 @@ export default class Node extends Component {
   }
   render() {
     return (
-      <DAG-Node>
-        <div className="box text-center"
-              id={this.state.id}
-              style={this.state.style}>
-          <div className={classnames({'dag-node': true, [this.state.type]: true})}></div>
-            <div className="label">{this.state.label}</div>
+      <div
+        className="node text-center"
+        id={this.state.id}
+        style={this.state.style}
+      >
+        <div className={classnames({'dag-node': true, [this.state.type]: true})}>
+          <strong
+            className="close-btn"
+            onClick={(e) => {
+              this.props.onClick.bind(null, 'close');
+              e.preventDefault();
+              e.preventPropagation();
+              return false;
+            }}
+          >
+            x
+          </strong>
         </div>
-      </DAG-Node>
-    )
+        <div className="label">{this.state.label}</div>
+      </div>
+    );
   }
 }

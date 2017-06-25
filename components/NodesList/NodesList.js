@@ -1,16 +1,24 @@
-import Node from '../Node/Node';
+/*
+  @flow
+*/
 import React, { Component } from 'react';
+import Node from '../Node/Node';
 import uuid from 'node-uuid';
 
+type propType = {
+  onClick: (x: Object) => void,
+  nodes: Array<Object>
+}
 export default class NodesList extends Component {
-  constructor(props) {
+  state: Object;
+  constructor(props: propType) {
     super(props);
     let { nodes = []} = props;
     this.state = {
       nodes: nodes.map( node => Object.assign({}, node, { id: node.id || uuid.v4() }) )
     };
   }
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: propType) {
     this.setState({
       nodes: newProps.nodes.map(
         node => Object.assign({}, node, { id: node.id || uuid.v4() })
@@ -19,7 +27,7 @@ export default class NodesList extends Component {
   }
   render() {
     return (
-      <DAG-NodesList>
+      <div className="dag-nodes-list">
         {
           this.state
             .nodes
@@ -30,11 +38,12 @@ export default class NodesList extends Component {
                   label={node.label}
                   key={node.id}
                   id={node.id}
+                  onClick={this.props.onClick}
                 />
               )
             })
         }
-      </DAG-NodesList>
+      </div>
     );
   }
 }

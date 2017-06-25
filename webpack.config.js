@@ -1,9 +1,14 @@
 var webpack = require('webpack');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+var StyleLintPlugin = require('stylelint-webpack-plugin');
 
 var buildmode = process.env.NODE_ENV;
 var plugins = [
-  new LodashModuleReplacementPlugin()
+  new LodashModuleReplacementPlugin(),
+  new StyleLintPlugin({
+    syntax: 'scss',
+    files: ['**/*.scss']
+  })
 ];
 var webpackconfig = {
   context: __dirname,
@@ -12,6 +17,10 @@ var webpackconfig = {
   },
   module: {
     loaders: [
+      {
+        test: /\.scss$/,
+        loader: 'style-loader!css-loader!sass-loader'
+      },
       {
         test: /node_module\/dagre\/dist\/dagre.core.js/,
         loaders: [

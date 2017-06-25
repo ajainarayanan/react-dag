@@ -99,7 +99,7 @@ let combinedReducers = function(reducersMap = defaultReducersMap()) {
   });
 };
 
-export function configureStore(data, reducersMap, middlewares = [], enhancers= []) {
+export default function configureStore(data, reducersMap, middlewares = [], enhancers= []) {
   let store = createStore(
     combinedReducers(reducersMap),
     data,
@@ -111,4 +111,6 @@ export function configureStore(data, reducersMap, middlewares = [], enhancers= [
     )
   );
   return store;
-};
+}
+
+

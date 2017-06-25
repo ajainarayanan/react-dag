@@ -1,0 +1,12 @@
+
+.node {
+  .dag-node {
+    position: relative;
+    .close-btn {
+      cursor: pointer;
+      position: absolute;
+      top: -3px;
+      right: 3px;
+    }
+  }
+}

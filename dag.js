@@ -1,27 +1,34 @@
 /* @flow */
 
 import React , { Component } from 'react';
-import {configureStore} from './dag-store';
+import configureStore from './dag-store';
 import {getSettings} from './dag-settings';
 import uuid from 'node-uuid';
+// $FlowFixMe
+import isNil from 'lodash/isNil';
 
 import NodesList from './components/NodesList/NodesList';
 
-require('./styles/dag.less');
+require('./styles/dag.scss');
+// $FlowFixMe
 import jsPlumb from 'jsPlumb';
+
 type propType = {
   children: Object,
   data: Object,
   additionalReducersMap: Object,
   enhancers: Array<Object>,
-  middlewares: Array<Object>
+  middlewares: Array<Object>,
+  settings: Object,
+  store: Object
 };
-export class DAG extends Component {
+export {configureStore};
+export default class DAG extends Component {
   store: Object;
   settings: Object;
   instance: Object;
   state: {
-    componentId: number,
+    componentId: string,
     graph: Object,
     nodes: Array<Object>
   };
@@ -29,13 +36,18 @@ export class DAG extends Component {
     super(props);
     this.props = props;
     let {data, additionalReducersMap, enhancers = [], middlewares = []} = props;
-    this.store = configureStore(
-      data,
-      additionalReducersMap,
-      [...middlewares],
-      [...enhancers]
-    );
-    this.state = this.store.getState();
+    this.store = isNil(props.store) ? 
+      configureStore(
+        data,
+        additionalReducersMap,
+        [...middlewares],
+        [...enhancers]
+      )
+    :
+      props.store;
+    this.state = Object.assign({}, {
+      componentId: uuid.v4()
+    }, this.store.getState());
     if (props.data) {
       this.toggleLoading(true);
     }
@@ -51,7 +63,7 @@ export class DAG extends Component {
 
     jsPlumb.ready(() => {
       let dagSettings = this.settings.default;
-      let container = document.querySelector(`${this.state.componentId} #dag-container`);
+      let container = document.querySelector(`#${this.state.componentId} #dag-container`);
       jsPlumb.setContainer(container);
       this.instance = jsPlumb.getInstance(dagSettings);
       this.instance.bind('connection', this.makeConnections.bind(this));
@@ -70,9 +82,10 @@ export class DAG extends Component {
     this.addEndpoints();
     this.makeNodesDraggable();
     this.renderConnections();
+    this.instance.repaintEverything();
   }
   makeNodesDraggable() {
-    let nodes = document.querySelectorAll('#dag-container .box');
+    let nodes = document.querySelectorAll('#dag-container .node');
     this.instance.draggable(nodes, {
       start: () => { console.log('Starting to drag')},
       stop: (dragEndEvent) => {
@@ -195,7 +208,7 @@ export class DAG extends Component {
     });
   }
   render() {
-    const loadContent = () => {
+    const loadingAnimation = () => {
       if (this.state.graph.loading) {
         return (
           <div className="fa fa-spin fa-refresh fa-5x"></div>
@@ -223,15 +236,18 @@ export class DAG extends Component {
       return style;
     };
     return (
-      <my-dag id={this.state.componentId}>
+      <div
+        className="react-dag"
+        id={this.state.componentId}
+      >
         {this.props.children}
         <div className="diagram-container">
           <div id="dag-container" style={getStyles()}>
-            {loadContent()}
+            {loadingAnimation()}
             {loadNodes()}
           </div>
         </div>
-      </my-dag>
+      </div>
     );
   }
 }

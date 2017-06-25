@@ -1,7 +1,9 @@
 /* @flow */
-import _ from 'lodash';
-const extend = _.extend;
-const clone = _.clone;
+
+// $FlowFixMe
+import extend from 'lodash/extend';
+// $FlowFixMe
+import clone from 'lodash/clone';
 
 export const defaultSettings = {
   Connector : [ 'Flowchart', {gap: 6, stub: [10, 15], alwaysRespectStubs: true} ],
@@ -48,20 +50,27 @@ export const sinkSettings = extend({
 }, commonSettings);
 
 export function getSettings(isDisabled: ?boolean = false) {
-  var settings: Object = {};
+  var settings: Object = {
+    transformSource: {},
+    transformSink: {}
+  };
   if (isDisabled) {
     settings = {
       default: defaultSettings,
       commonSettings: extend(commonSettings, disabledConnectorOverlays),
       source: extend(sourceSettings, disabledConnectorOverlays),
-      sink: extend(sinkSettings, disabledConnectorOverlays)
+      sink: extend(sinkSettings, disabledConnectorOverlays),
+      transformSource: {},
+      transformSink: {}
     };
   } else {
     settings = {
       default: defaultSettings,
       commonSettings: extend(commonSettings, connectorOverlays),
       source: extend(sourceSettings, connectorOverlays),
-      sink: extend(sinkSettings, connectorOverlays)
+      sink: extend(sinkSettings, connectorOverlays),
+      transformSource: {},
+      transformSink: {}
     };
   }
 

@@ -1,4 +1,4 @@
-my-dag {
+.react-dag {
   display: block;
   .jtk-endpoint {
     svg {
@@ -23,7 +23,7 @@ my-dag {
     position: relative;
     width: 100%;
     height: 80vh;
-    background: #eee;
+    background: #eeeeee;
     overflow: hidden;
 
     #dag-container {
@@ -32,7 +32,7 @@ my-dag {
       position: absolute;
       transform-origin: left center;
 
-      .box {
+      .node {
         position: absolute;
         height: 66px;
         width: 105px;
@@ -40,26 +40,26 @@ my-dag {
 
         .dag-node {
           margin: 0 auto;
-          backgroun-clip: border-box;
+          background-clip: border-box;
           height: 46px;
           width: 56px;
           border-radius: 5px;
 
           &.source {
             border: 2px solid green;
-            ~.label {
+            ~ .label {
               color: green;
             }
           }
           &.transform {
             border: 2px solid purple;
-            ~.label {
+            ~ .label {
               color: purple;
             }
           }
           &.sink {
             border: 2px solid orange;
-            ~.label {
+            ~ .label {
               color: orange;
             }
           }
