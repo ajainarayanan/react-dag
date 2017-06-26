@@ -1,5 +1,5 @@
-import {DAG} from '../dag';
-import React, { Component } from 'react';
+import DAG from '../dag';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import {data} from './data';
