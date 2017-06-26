@@ -9,7 +9,7 @@ type propType = {
   label: string,
   id: string,
   type: string,
-  onClick: (x: Object) => void
+  onNodesClick: (x: Object) => void
 };
 
 export default class Node extends Component {
@@ -47,12 +47,13 @@ export default class Node extends Component {
         className="node text-center"
         id={this.state.id}
         style={this.state.style}
+        onClick={this.props.onNodesClick.bind(null, 'click', this.state)}
       >
         <div className={classnames({'dag-node': true, [this.state.type]: true})}>
           <strong
             className="close-btn"
             onClick={(e) => {
-              this.props.onClick.bind(null, 'close');
+              this.props.onNodesClick.bind(null, 'close', this.state);
               e.preventDefault();
               e.preventPropagation();
               return false;

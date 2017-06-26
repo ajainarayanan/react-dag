@@ -1,9 +1,10 @@
 /* @flow */
 
 import React , { Component } from 'react';
-import configureStore from './dag-store';
+import configureStore, {STOREACTIONS} from './dag-store';
 import {getSettings} from './dag-settings';
 import uuid from 'node-uuid';
+import classnames from 'classnames';
 // $FlowFixMe
 import isNil from 'lodash/isNil';
 
@@ -14,15 +15,18 @@ require('./styles/dag.scss');
 import jsPlumb from 'jsPlumb';
 
 type propType = {
+  className: string,
   children: Object,
   data: Object,
   additionalReducersMap: Object,
   enhancers: Array<Object>,
   middlewares: Array<Object>,
   settings: Object,
-  store: Object
+  store: Object,
+  renderNode: (x: Object) => ?React$Element<any>,
+  onNodesClick: (x: Object) => void
 };
-export {configureStore};
+export {configureStore, STOREACTIONS};
 export default class DAG extends Component {
   store: Object;
   settings: Object;
@@ -70,19 +74,30 @@ export default class DAG extends Component {
       this.instance.bind('connectionDetached', this.makeConnections.bind(this));
     });
   }
+  componentWillUnmount() {
+    this.store.dispatch({
+      type: STOREACTIONS.RESET
+    });
+  }
+  componentDidMount() {
+    this.setState(this.store.getState());
+    // Because html id needs to start with a character
+    this.setState({componentId: 'A' + uuid.v4()});
+    setTimeout( () => {
+      this.toggleLoading(false);
+      if (Object.keys(this.props.data || {}).length) {
+        this.renderGraph();
+        this.cleanUpGraph();
+      }
+    }, 600);
+  }
   toggleLoading(loading: bool) {
     this.store.dispatch({
-      type: 'LOADING',
+      type: STOREACTIONS.GRAPHLOADING,
       payload: {
         loading: loading
       }
     });
-  }
-  renderGraph() {
-    this.addEndpoints();
-    this.makeNodesDraggable();
-    this.renderConnections();
-    this.instance.repaintEverything();
   }
   makeNodesDraggable() {
     let nodes = document.querySelectorAll('#dag-container .node');
@@ -90,7 +105,7 @@ export default class DAG extends Component {
       start: () => { console.log('Starting to drag')},
       stop: (dragEndEvent) => {
         this.store.dispatch({
-          type: 'UPDATE_NODE',
+          type: STOREACTIONS.UPDATENODE,
           payload: {
             nodeId: dragEndEvent.el.id,
             style: {
@@ -113,33 +128,10 @@ export default class DAG extends Component {
         })
       );
       this.store.dispatch({
-        type: 'SET-CONNECTIONS',
+        type: STOREACTIONS.SETCONNECTIONS,
         payload: {
           connections
         }
-      });
-  }
-  renderConnections() {
-    let connectionsFromInstance = this.instance
-      .getConnections()
-      .map( conn => ({
-          from: conn.sourceId,
-          to: conn.targetId
-        })
-      );
-    let {nodes, connections} = this.store.getState();
-    if (connections.length === connectionsFromInstance.length) { return; }
-    connections
-      .forEach( connection => {
-        var sourceNode = nodes.find( node => node.id === connection.from);
-        var targetNode = nodes.find( node => node.id === connection.to);
-        var sourceId = sourceNode.type === 'transform' ? 'Left' + connection.from : connection.from;
-        var targetId = targetNode.type === 'transform' ? 'Right' + connection.to : connection.to;
-        var connObj = {
-          uuids: [sourceId, targetId],
-          detachable: true
-        };
-        this.instance.connect(connObj);
       });
   }
   addEndpoints() {
@@ -162,29 +154,8 @@ export default class DAG extends Component {
       }
     });
   }
-  componentDidMount() {
-    this.setState(this.store.getState());
-    // Because html id needs to start with a character
-    this.setState({componentId: 'A' + uuid.v4()});
-    setTimeout( () => {
-      this.toggleLoading(false);
-      if (Object.keys(this.props.data || {}).length) {
-        this.renderGraph();
-        this.cleanUpGraph();
-      }
-    }, 600);
-  }
-  addNode(node: Object) {
-    let {type, label} = node;
-    this.store.dispatch({
-      type: 'ADD-NODE',
-      payload: {
-        type,
-        label,
-        id: type + Date.now().toString().slice(8)
-      }
-    });
-  }
+  // FIXME: This can be removed. Doesn't make sense to have this action here and the actual
+  // reducer outside of this component.
   cleanUpGraph() {
     let {nodes, connections} = this.store.getState();
     this.store.dispatch({
@@ -202,10 +173,34 @@ export default class DAG extends Component {
     });
     setTimeout(this.instance.repaintEverything.bind(this));
   }
-  componentWillUnmount() {
-    this.store.dispatch({
-      type: 'RESET'
-    });
+  renderConnections() {
+    let connectionsFromInstance = this.instance
+      .getConnections()
+      .map( conn => ({
+          from: conn.sourceId,
+          to: conn.targetId
+        })
+      );
+    let {nodes, connections} = this.store.getState();
+    if (connections.length === connectionsFromInstance.length) { return; }
+    connections
+      .forEach( connection => {
+        var sourceNode = nodes.find(node => node.id === connection.from);
+        var targetNode = nodes.find(node => node.id === connection.to);
+        var sourceId = sourceNode.type === 'transform' ? 'Left' + connection.from : connection.from;
+        var targetId = targetNode.type === 'transform' ? 'Right' + connection.to : connection.to;
+        var connObj = {
+          uuids: [sourceId, targetId],
+          detachable: true
+        };
+        this.instance.connect(connObj);
+      });
+  }
+  renderGraph() {
+    this.addEndpoints();
+    this.makeNodesDraggable();
+    this.renderConnections();
+    this.instance.repaintEverything();
   }
   render() {
     const loadingAnimation = () => {
@@ -218,7 +213,11 @@ export default class DAG extends Component {
     const loadNodes = () => {
       if (!this.state.graph.loading) {
         return (
-          <NodesList nodes={this.state.nodes}/>
+          <NodesList
+            nodes={this.state.nodes}
+            onNodesClick={this.props.onNodesClick}
+            renderNode={this.props.renderNode}
+          />
         );
       }
     };
@@ -237,7 +236,7 @@ export default class DAG extends Component {
     };
     return (
       <div
-        className="react-dag"
+        className={classnames("react-dag", this.props.className)}
         id={this.state.componentId}
       >
         {this.props.children}

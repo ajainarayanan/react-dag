@@ -1,9 +1,21 @@
 import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
 import uuid from 'node-uuid';
 
+const STOREACTIONS = {
+  ADDNODE: 'ADD_NODE',
+  UPDATENODE: 'UPDATE_NODE',
+  REMOVENODE: 'REMOVE_NODE',
+  ADDCONNECTION: 'ADD_CONNECTIONS',
+  SETCONNECTIONS: 'SET_CONNECTIONS',
+  RESET: 'RESET',
+  GRAPHLOADING: 'GRAPHLOADING'
+};
+
+export {STOREACTIONS};
+
 let nodes = (state = [], action = {}) => {
   switch(action.type) {
-    case 'ADD-NODE':
+    case STOREACTIONS.ADDNODE:
       return [
         ...state,
         {
@@ -12,7 +24,7 @@ let nodes = (state = [], action = {}) => {
           type: action.payload.type
         }
       ];
-    case 'UPDATE_NODE':
+    case STOREACTIONS.UPDATENODE:
       return state.map(node => {
         if (node.id === action.payload.nodeId) {
           node.style = action.payload.style;
@@ -20,7 +32,9 @@ let nodes = (state = [], action = {}) => {
         }
         return node;
       });
-    case 'RESET':
+    case STOREACTIONS.REMOVENODE:
+      return state.filter(node => (node.id !== action.payload.nodeId));
+    case STOREACTIONS.RESET:
       return [];
     default:
       return state;
@@ -28,7 +42,7 @@ let nodes = (state = [], action = {}) => {
 };
 const connections = (state = [], action = {}) => {
   switch(action.type) {
-    case 'ADD-CONNECTIONS':
+    case STOREACTIONS.ADDCONNECTION:
       return [
         ...state,
         {
@@ -36,9 +50,9 @@ const connections = (state = [], action = {}) => {
           to: action.connection.to
         }
       ];
-    case 'SET-CONNECTIONS':
+    case STOREACTIONS.SETCONNECTIONS:
       return [...action.payload.connections];
-    case 'RESET':
+    case STOREACTIONS.RESET:
       return [];
     default:
       return state;
@@ -47,9 +61,9 @@ const connections = (state = [], action = {}) => {
 
 const graph = (state = {}, action = {}) => {
   switch(action.type) {
-    case 'LOADING':
+    case STOREACTIONS.GRAPHLOADING:
       return Object.assign({}, state, {loading: action.payload.loading});
-    case 'RESET':
+    case STOREACTIONS.RESET:
       return {};
     default:
       return state;
