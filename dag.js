@@ -36,6 +36,7 @@ export default class DAG extends Component {
     graph: Object,
     nodes: Array<Object>
   };
+  storeSub: () => void;
   constructor(props: propType) {
     super(props);
     this.props = props;
@@ -50,7 +51,7 @@ export default class DAG extends Component {
     :
       props.store;
     this.state = Object.assign({}, {
-      componentId: uuid.v4()
+      componentId: 'A' + uuid.v4()
     }, this.store.getState());
     if (props.data) {
       this.toggleLoading(true);
@@ -60,11 +61,19 @@ export default class DAG extends Component {
     } else {
       this.settings = getSettings();
     }
-    this.store.subscribe( () => {
+    this.storeSub = this.store.subscribe( () => {
       this.setState(this.store.getState());
       setTimeout(this.renderGraph.bind(this));
     });
-
+  }
+  componentWillUnmount() {
+    this.storeSub();
+    this.store.dispatch({
+      type: STOREACTIONS.RESET
+    });
+    this.resetGraph();
+  }
+  componentDidMount() {
     jsPlumb.ready(() => {
       let dagSettings = this.settings.default;
       let container = document.querySelector(`#${this.state.componentId} #dag-container`);
@@ -73,16 +82,6 @@ export default class DAG extends Component {
       this.instance.bind('connection', this.makeConnections.bind(this));
       this.instance.bind('connectionDetached', this.makeConnections.bind(this));
     });
-  }
-  componentWillUnmount() {
-    this.store.dispatch({
-      type: STOREACTIONS.RESET
-    });
-  }
-  componentDidMount() {
-    this.setState(this.store.getState());
-    // Because html id needs to start with a character
-    this.setState({componentId: 'A' + uuid.v4()});
     setTimeout( () => {
       this.toggleLoading(false);
       if (Object.keys(this.props.data || {}).length) {
@@ -195,6 +194,12 @@ export default class DAG extends Component {
         };
         this.instance.connect(connObj);
       });
+  }
+  resetGraph() {
+    this.instance.unbind('connection');
+    this.instance.unbind('connectionDetached');
+    this.instance.detachEveryConnection();
+    this.instance.deleteEveryEndpoint();
   }
   renderGraph() {
     this.addEndpoints();
