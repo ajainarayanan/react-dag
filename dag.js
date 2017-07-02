@@ -81,7 +81,6 @@ export default class DAG extends Component {
       let container = document.querySelector(`#${this.state.componentId} #dag-container`);
       jsPlumb.setContainer(container);
       this.instance = jsPlumb.getInstance(dagSettings);
-      window.plumbInstance = this.instance;
       this.instance.bind('connection', this.makeConnections.bind(this));
       this.instance.bind('connectionDetached', this.makeConnections.bind(this));
     });
