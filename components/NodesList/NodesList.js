@@ -39,7 +39,6 @@ export default class NodesList extends Component {
           this.state
             .nodes
             .map( node => {
-              console.log('Rendering node: ', node);
               if (this.props.renderNode) {
                 return this.props.renderNode(node);
               }
