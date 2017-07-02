@@ -8,7 +8,8 @@ import uuid from 'node-uuid';
 type propType = {
   renderNode: (x: Object) => ?React$Element<any>,
   onNodesClick: (x: Object) => void,
-  nodes: Array<Object>
+  nodes: Array<Object>,
+  jsPlumbInstance: Object
 }
 export default class NodesList extends Component {
   state: Object;
@@ -22,7 +23,12 @@ export default class NodesList extends Component {
   componentWillReceiveProps(newProps: propType) {
     this.setState({
       nodes: newProps.nodes.map(
-        node => Object.assign({}, node, { id: node.id || uuid.v4() })
+        node => {
+          if (node.id) {
+            return node;
+          }
+          return Object.assign({}, node, { id: node.id || uuid.v4() })
+        }
       )
     });
   }
@@ -33,6 +39,7 @@ export default class NodesList extends Component {
           this.state
             .nodes
             .map( node => {
+              console.log('Rendering node: ', node);
               if (this.props.renderNode) {
                 return this.props.renderNode(node);
               }

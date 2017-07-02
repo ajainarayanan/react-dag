@@ -50,20 +50,22 @@ export default class DAG extends Component {
       )
     :
       props.store;
-    this.state = Object.assign({}, {
-      componentId: 'A' + uuid.v4()
-    }, this.store.getState());
     if (props.data) {
       this.toggleLoading(true);
     }
+    this.state = Object.assign({}, {
+      componentId: 'A' + uuid.v4()
+    }, this.store.getState());
     if (props.settings) {
       this.settings = Object.assign({}, props.settings);
     } else {
       this.settings = getSettings();
     }
     this.storeSub = this.store.subscribe( () => {
-      this.setState(this.store.getState());
-      setTimeout(this.renderGraph.bind(this));
+      this.setState(this.store.getState(), () => {
+        this.resetGraph();
+        this.renderGraph();
+      });
     });
   }
   componentWillUnmount() {
@@ -79,6 +81,7 @@ export default class DAG extends Component {
       let container = document.querySelector(`#${this.state.componentId} #dag-container`);
       jsPlumb.setContainer(container);
       this.instance = jsPlumb.getInstance(dagSettings);
+      window.plumbInstance = this.instance;
       this.instance.bind('connection', this.makeConnections.bind(this));
       this.instance.bind('connectionDetached', this.makeConnections.bind(this));
     });
@@ -186,6 +189,9 @@ export default class DAG extends Component {
       .forEach( connection => {
         var sourceNode = nodes.find(node => node.id === connection.from);
         var targetNode = nodes.find(node => node.id === connection.to);
+        if (!sourceNode || !targetNode) {
+          return;
+        }
         var sourceId = sourceNode.type === 'transform' ? 'Left' + connection.from : connection.from;
         var targetId = targetNode.type === 'transform' ? 'Right' + connection.to : connection.to;
         var connObj = {
@@ -202,6 +208,8 @@ export default class DAG extends Component {
     this.instance.deleteEveryEndpoint();
   }
   renderGraph() {
+    this.instance.bind('connection', this.makeConnections.bind(this));
+    this.instance.bind('connectionDetached', this.makeConnections.bind(this));
     this.addEndpoints();
     this.makeNodesDraggable();
     this.renderConnections();
@@ -220,8 +228,9 @@ export default class DAG extends Component {
         return (
           <NodesList
             nodes={this.state.nodes}
-            onNodesClick={this.props.onNodesClick}
-            renderNode={this.props.renderNode}
+            onNodesClick={this.props.onNodesClick.bind(null, this.instance)}
+            renderNode={this.props.renderNode.bind(null, this.instance)}
+            jsPlumbInstance={this.instance}
           />
         );
       }

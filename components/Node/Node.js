@@ -9,7 +9,8 @@ type propType = {
   label: string,
   id: string,
   type: string,
-  onNodesClick: (x: Object) => void
+  onNodesClick: (x: Object) => void,
+  jsPlumbInstance: Object
 };
 
 export default class Node extends Component {
@@ -40,6 +41,9 @@ export default class Node extends Component {
       label,
       id
     });
+  }
+  componentWillUnmount() {
+    this.props.jsPlumbInstance.remove(this.state.id, false);
   }
   render() {
     return (
