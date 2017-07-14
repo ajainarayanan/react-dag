@@ -58,8 +58,9 @@ export default class Node extends Component {
             className="close-btn"
             onClick={(e) => {
               this.props.onNodesClick.bind(null, 'close', this.state);
+              e.stopPropagation();
+              e.nativeEvent.stopImmediatePropagation();
               e.preventDefault();
-              e.preventPropagation();
               return false;
             }}
           >

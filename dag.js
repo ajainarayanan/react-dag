@@ -23,14 +23,20 @@ type propType = {
   middlewares: Array<Object>,
   settings: Object,
   store: Object,
-  renderNode: (x: Object) => ?React$Element<any>,
-  onNodesClick: (x: Object) => void
+  renderNode?: (x: Object) => ?React$Element<any>,
+  onNodesClick?: (x: Object) => void
 };
 export {configureStore, STOREACTIONS};
 export default class DAG extends Component {
   store: Object;
   settings: Object;
   instance: Object;
+  static defaultProps = {
+    onNodesClick: () => {},
+    additionalReducersMap: {},
+    enhancers: [],
+    middlewares: []
+  };
   state: {
     componentId: string,
     graph: Object,
@@ -228,7 +234,7 @@ export default class DAG extends Component {
           <NodesList
             nodes={this.state.nodes}
             onNodesClick={this.props.onNodesClick.bind(null, this.instance)}
-            renderNode={this.props.renderNode.bind(null, this.instance)}
+            renderNode={isNil(this.props.renderNode) ? null: this.props.renderNode.bind(null, this.instance)}
             jsPlumbInstance={this.instance}
           />
         );
