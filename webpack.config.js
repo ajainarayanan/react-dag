@@ -16,31 +16,39 @@ var webpackconfig = {
     'react-dag': './dag.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.scss$/,
-        loader: 'style-loader!css-loader!sass-loader'
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
       },
       {
         test: /node_module\/dagre\/dist\/dagre.core.js/,
-        loaders: [
+        use: [
           'imports?this=>window',
           'script'
         ]
       },
       {
         test:  /\.(ttf|eot|svg|woff|woff(2))(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file-loader"
+        use: ['file-loader']
       },
       {
         test: [
           /\.less$/
         ],
-        loader: 'style-loader!css-loader!less-loader'
+        use: [
+          'style-loader', 
+          'css-loader',
+          'less-loader'
+        ]
       },
       {
         test: /\.js$/,
-        loader: 'babel',
+        use: ['babel-loader'],
         exclude: /node_modules/
       }
     ]
@@ -68,8 +76,7 @@ if (['production', 'libtest'].indexOf(buildmode) !== -1) {
         commonjs2: 'react-dom',
         commonjs: 'react-dom',
         amd: 'react-dom'
-      },
-      'classname': 'classname'
+      }
     },
   });
   if (buildmode === 'production') {
@@ -90,7 +97,7 @@ if (['production', 'libtest'].indexOf(buildmode) !== -1) {
   webpackconfig = Object.assign({}, webpackconfig, {
     entry: {
       'index': './dev/index.js',
-      'vendor': ['react', 'react-dom', 'redux', 'lodash', 'classname']
+      'vendor': ['react', 'react-dom', 'redux', 'lodash', 'classnames']
     },
     output: {
       filename: './[name].js',
