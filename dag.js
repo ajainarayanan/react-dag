@@ -3,7 +3,7 @@
 import React , { Component } from 'react';
 import configureStore, {STOREACTIONS} from './dag-store';
 import {getSettings} from './dag-settings';
-import uuid from 'node-uuid';
+import shortid from 'shortid';
 import classnames from 'classnames';
 // $FlowFixMe
 import isNil from 'lodash/isNil';
@@ -54,7 +54,7 @@ export default class DAG extends Component {
       this.toggleLoading(true);
     }
     this.state = Object.assign({}, {
-      componentId: 'A' + uuid.v4()
+      componentId: `N-${shortid.generate()}`
     }, this.store.getState());
     if (props.settings) {
       this.settings = Object.assign({}, props.settings);

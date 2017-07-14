@@ -3,7 +3,7 @@
 */
 import React, { Component } from 'react';
 import Node from '../Node/Node';
-import uuid from 'node-uuid';
+import shortid from 'shortid';
 
 type propType = {
   renderNode: (x: Object) => ?React$Element<any>,
@@ -17,7 +17,7 @@ export default class NodesList extends Component {
     super(props);
     let { nodes = []} = props;
     this.state = {
-      nodes: nodes.map( node => Object.assign({}, node, { id: node.id || uuid.v4() }) )
+      nodes: nodes.map( node => Object.assign({}, node, { id: node.id || `N-${shortid.generate()}` }) )
     };
   }
   componentWillReceiveProps(newProps: propType) {
@@ -27,7 +27,7 @@ export default class NodesList extends Component {
           if (node.id) {
             return node;
           }
-          return Object.assign({}, node, { id: node.id || uuid.v4() })
+          return Object.assign({}, node, { id: node.id || `N-${shortid.generate()}` })
         }
       )
     });

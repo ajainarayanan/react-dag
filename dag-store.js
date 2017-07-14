@@ -1,5 +1,5 @@
 import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
-import uuid from 'node-uuid';
+import shortid from 'shortid';
 
 const STOREACTIONS = {
   ADDNODE: 'ADD_NODE',
@@ -19,7 +19,7 @@ let nodes = (state = [], action = {}) => {
       return [
         ...state,
         {
-          id: uuid.v4(),
+          id: `N-${shortid.generate()}`,
           label: action.payload.label,
           type: action.payload.type
         }
