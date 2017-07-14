@@ -207,12 +207,18 @@ export default class DAG extends Component {
       });
   }
   resetGraph() {
+    if (!this.instance) {
+      return;
+    }
     this.instance.unbind('connection');
     this.instance.unbind('connectionDetached');
     this.instance.detachEveryConnection();
     this.instance.deleteEveryEndpoint();
   }
   renderGraph() {
+    if (!this.instance) {
+      return;
+    }
     this.instance.bind('connection', this.makeConnections.bind(this));
     this.instance.bind('connectionDetached', this.makeConnections.bind(this));
     this.addEndpoints();
