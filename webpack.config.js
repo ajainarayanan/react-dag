@@ -93,7 +93,7 @@ if (['production', 'libtest'].indexOf(buildmode) !== -1) {
       })
     );
   }
-} else if ('test') {
+} else if (buildmode === 'test') {
   webpackconfig = Object.assign({}, webpackconfig, {
     entry: {
       'index': './dev/index.js',
