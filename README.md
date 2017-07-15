@@ -1,4 +1,4 @@
-## react-dag
+# react-dag
 
 This is a base implementation of wrapping jsplumb with react + redux to be more usable in a react based environment.
 
