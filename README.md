@@ -27,6 +27,10 @@ This is a base implementation of wrapping jsplumb with react + redux to be more 
   - `settings` - Settings to be used for JsPlumb. Check out `dag-settings.js` for base settings that are available.
   ###### Note
     The `settings` prop is like either or - Either you provide the entire settings for the DAG or take the base settings. I am still yet to work on how to achieve granularity (or mixin) multiple different settings.
+  
+  - `renderNode` - Callback function to render your own nodes instead of the default nodes that comes with dag. Note: If you are using your own render function for nodes please do attach `.node` class name to the nodes. Till today thats how dag.js understands a node in the DAG and makes it draggable.
+
+  - `onNodesClick` - Click handler for each node click. 
 
   - `data` - Is the initial state of the DAG. Could be used to render the DAG right away if the data is already available (instead of constructing the DAG one node at a time).
 
