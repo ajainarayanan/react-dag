@@ -1,8 +1,8 @@
 /* @flow */
 
-import React , { Component } from 'react';
-import configureStore, {STOREACTIONS} from './dag-store';
-import {getSettings} from './dag-settings';
+import React, { Component } from 'react';
+import configureStore, { STOREACTIONS } from './dag-store';
+import { getSettings } from './dag-settings';
 import shortid from 'shortid';
 import classnames from 'classnames';
 // $FlowFixMe
@@ -24,9 +24,9 @@ type propType = {
   settings: Object,
   store: Object,
   renderNode?: (x: Object) => ?React$Element<any>,
-  onNodesClick?: (x: Object) => void
+  onNodesClick?: (x: Object) => void,
 };
-export {configureStore, STOREACTIONS};
+export { configureStore, STOREACTIONS };
 export default class DAG extends Component {
   store: Object;
   settings: Object;
@@ -35,39 +35,37 @@ export default class DAG extends Component {
     onNodesClick: () => {},
     additionalReducersMap: {},
     enhancers: [],
-    middlewares: []
+    middlewares: [],
   };
   state: {
     componentId: string,
     graph: Object,
-    nodes: Array<Object>
+    nodes: Array<Object>,
   };
   storeSub: () => void;
   constructor(props: propType) {
     super(props);
     this.props = props;
-    let {data, additionalReducersMap, enhancers = [], middlewares = []} = props;
-    this.store = isNil(props.store) ? 
-      configureStore(
-        data,
-        additionalReducersMap,
-        [...middlewares],
-        [...enhancers]
-      )
-    :
-      props.store;
+    let { data, additionalReducersMap, enhancers = [], middlewares = [] } = props;
+    this.store = isNil(props.store)
+      ? configureStore(data, additionalReducersMap, [...middlewares], [...enhancers])
+      : props.store;
     if (props.data) {
       this.toggleLoading(true);
     }
-    this.state = Object.assign({}, {
-      componentId: `N-${shortid.generate()}`
-    }, this.store.getState());
+    this.state = Object.assign(
+      {},
+      {
+        componentId: `N-${shortid.generate()}`,
+      },
+      this.store.getState(),
+    );
     if (props.settings) {
       this.settings = Object.assign({}, props.settings);
     } else {
       this.settings = getSettings();
     }
-    this.storeSub = this.store.subscribe( () => {
+    this.storeSub = this.store.subscribe(() => {
       this.setState(this.store.getState(), () => {
         this.resetGraph();
         this.renderGraph();
@@ -77,7 +75,7 @@ export default class DAG extends Component {
   componentWillUnmount() {
     this.storeSub();
     this.store.dispatch({
-      type: STOREACTIONS.RESET
+      type: STOREACTIONS.RESET,
     });
     this.resetGraph();
   }
@@ -90,7 +88,7 @@ export default class DAG extends Component {
       this.instance.bind('connection', this.makeConnections.bind(this));
       this.instance.bind('connectionDetached', this.makeConnections.bind(this));
     });
-    setTimeout( () => {
+    setTimeout(() => {
       this.toggleLoading(false);
       if (Object.keys(this.props.data || {}).length) {
         this.renderGraph();
@@ -98,48 +96,49 @@ export default class DAG extends Component {
       }
     }, 600);
   }
-  toggleLoading(loading: bool) {
+  toggleLoading(loading: boolean) {
     this.store.dispatch({
       type: STOREACTIONS.GRAPHLOADING,
       payload: {
-        loading: loading
-      }
+        loading: loading,
+      },
     });
   }
   makeNodesDraggable() {
     let nodes = document.querySelectorAll('#dag-container .node');
     this.instance.draggable(nodes, {
-      start: () => { console.log('Starting to drag')},
-      stop: (dragEndEvent) => {
+      start: () => {
+        console.log('Starting to drag');
+      },
+      stop: dragEndEvent => {
         this.store.dispatch({
           type: STOREACTIONS.UPDATENODE,
           payload: {
             nodeId: dragEndEvent.el.id,
             style: {
               top: dragEndEvent.el.style.top,
-              left: dragEndEvent.el.style.left
-            }
-          }
+              left: dragEndEvent.el.style.left,
+            },
+          },
         });
         this.instance.repaintEverything();
-      }
+      },
     });
   }
   makeConnections(info: Object, originalEvent: MouseEvent) {
-    if (!originalEvent) { return; }
-    let connections = this.instance
-      .getConnections()
-      .map(conn => ({
-          from: conn.sourceId,
-          to: conn.targetId
-        })
-      );
-      this.store.dispatch({
-        type: STOREACTIONS.SETCONNECTIONS,
-        payload: {
-          connections
-        }
-      });
+    if (!originalEvent) {
+      return;
+    }
+    let connections = this.instance.getConnections().map(conn => ({
+      from: conn.sourceId,
+      to: conn.targetId,
+    }));
+    this.store.dispatch({
+      type: STOREACTIONS.SETCONNECTIONS,
+      payload: {
+        connections,
+      },
+    });
   }
   addEndpoints() {
     let nodes = this.store.getState().nodes;
@@ -148,26 +147,34 @@ export default class DAG extends Component {
 
     nodes.forEach(node => {
       let type = node.type;
-      switch(type) {
+      switch (type) {
         case 'source':
-          this.instance.addEndpoint(node.id, this.settings.source, {uuid: node.id});
+          this.instance.addEndpoint(node.id, this.settings.source, {
+            uuid: node.id,
+          });
           return;
         case 'sink':
-          this.instance.addEndpoint(node.id, this.settings.sink, {uuid: node.id});
+          this.instance.addEndpoint(node.id, this.settings.sink, {
+            uuid: node.id,
+          });
           return;
         default:
-          this.instance.addEndpoint(node.id, this.settings.transformSource, {uuid: `Left${node.id}`});
-          this.instance.addEndpoint(node.id, this.settings.transformSink, {uuid: `Right${node.id}`});
+          this.instance.addEndpoint(node.id, this.settings.transformSource, {
+            uuid: `Left${node.id}`,
+          });
+          this.instance.addEndpoint(node.id, this.settings.transformSink, {
+            uuid: `Right${node.id}`,
+          });
       }
     });
   }
   // FIXME: This can be removed. Doesn't make sense to have this action here and the actual
   // reducer outside of this component.
   cleanUpGraph() {
-    let {nodes, connections} = this.store.getState();
+    let { nodes, connections } = this.store.getState();
     this.store.dispatch({
       type: 'CLEANUP-GRAPH',
-      payload: {nodes, connections}
+      payload: { nodes, connections },
     });
 
     this.store.dispatch({
@@ -175,36 +182,36 @@ export default class DAG extends Component {
       payload: {
         nodes,
         connections,
-        parentSelector: `#${this.state.componentId} .diagram-container`
-      }
+        parentSelector: `#${this.state.componentId} .diagram-container`,
+      },
     });
     setTimeout(this.instance.repaintEverything.bind(this));
   }
   renderConnections() {
-    let connectionsFromInstance = this.instance
-      .getConnections()
-      .map( conn => ({
-          from: conn.sourceId,
-          to: conn.targetId
-        })
-      );
-    let {nodes, connections} = this.store.getState();
-    if (connections.length === connectionsFromInstance.length) { return; }
-    connections
-      .forEach( connection => {
-        var sourceNode = nodes.find(node => node.id === connection.from);
-        var targetNode = nodes.find(node => node.id === connection.to);
-        if (!sourceNode || !targetNode) {
-          return;
-        }
-        var sourceId = sourceNode.type === 'transform' ? 'Left' + connection.from : connection.from;
-        var targetId = targetNode.type === 'transform' ? 'Right' + connection.to : connection.to;
-        var connObj = {
-          uuids: [sourceId, targetId],
-          detachable: true
-        };
-        this.instance.connect(connObj);
-      });
+    let connectionsFromInstance = this.instance.getConnections().map(conn => ({
+      from: conn.sourceId,
+      to: conn.targetId,
+    }));
+    let { nodes, connections } = this.store.getState();
+    if (connections.length === connectionsFromInstance.length) {
+      return;
+    }
+    connections.forEach(connection => {
+      var sourceNode = nodes.find(node => node.id === connection.from);
+      var targetNode = nodes.find(node => node.id === connection.to);
+      if (!sourceNode || !targetNode) {
+        return;
+      }
+      var sourceId =
+        sourceNode.type === 'transform' ? 'Left' + connection.from : connection.from;
+      var targetId =
+        targetNode.type === 'transform' ? 'Right' + connection.to : connection.to;
+      var connObj = {
+        uuids: [sourceId, targetId],
+        detachable: true,
+      };
+      this.instance.connect(connObj);
+    });
   }
   resetGraph() {
     if (!this.instance) {
@@ -226,29 +233,37 @@ export default class DAG extends Component {
     this.renderConnections();
     this.instance.repaintEverything();
   }
+  loadNodes = () => {
+    if (!this.state.graph.loading) {
+      return (
+        <NodesList
+          nodes={this.state.nodes}
+          onNodesClick={
+            typeof this.props.onNodesClick !== 'function'
+              ? () => {}
+              : this.props.onNodesClick.bind(null, this.instance)
+          }
+          renderNode={
+            typeof this.props.renderNode !== 'function'
+              ? () => {}
+              : this.props.renderNode.bind(null, this.instance)
+          }
+          jsPlumbInstance={this.instance}
+        />
+      );
+    }
+  };
+
+  loadingAnimation = () => {
+    if (this.state.graph.loading) {
+      return <div className="fa fa-spin fa-refresh fa-5x" />;
+    }
+  };
+
   render() {
-    const loadingAnimation = () => {
-      if (this.state.graph.loading) {
-        return (
-          <div className="fa fa-spin fa-refresh fa-5x"></div>
-        );
-      }
-    };
-    const loadNodes = () => {
-      if (!this.state.graph.loading) {
-        return (
-          <NodesList
-            nodes={this.state.nodes}
-            onNodesClick={this.props.onNodesClick.bind(null, this.instance)}
-            renderNode={isNil(this.props.renderNode) ? null: this.props.renderNode.bind(null, this.instance)}
-            jsPlumbInstance={this.instance}
-          />
-        );
-      }
-    };
     const getStyles = () => {
       let style = {
-        transform : ''
+        transform: '',
       };
       if (this.state.graph.scale) {
         style.transform += `scale(${this.state.graph.scale})`;
@@ -261,14 +276,14 @@ export default class DAG extends Component {
     };
     return (
       <div
-        className={classnames("react-dag", this.props.className)}
+        className={classnames('react-dag', this.props.className)}
         id={this.state.componentId}
       >
         {this.props.children}
         <div className="diagram-container">
           <div id="dag-container" style={getStyles()}>
-            {loadingAnimation()}
-            {loadNodes()}
+            {this.loadingAnimation()}
+            {this.loadNodes()}
           </div>
         </div>
       </div>
