@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-build": "webpack --watch -d",
     "prod-build": "NODE_ENV=production webpack -p",
-    "lib-test-build": "NODE_ENV=libtest webpack -d"
+    "lib-test-build": "NODE_ENV=libtest webpack -d",
+    "precommit": "lint-staged"
   },
   "author": "ajainarayanan",
   "license": "ISC",
@@ -41,13 +42,16 @@
     "expect": "1.20.2",
     "file-loader": "0.9.0",
     "flow-bin": "0.48.0",
+    "husky": "^0.14.3",
     "ignore-styles": "5.0.1",
     "imports-loader": "0.6.5",
     "jsdom": "9.6.0",
+    "lint-staged": "^4.0.2",
     "lodash-webpack-plugin": "0.10.2",
     "mocha": "3.1.1",
     "node-sass": "4.5.3",
     "postcss-loader": "^1.1.1",
+    "prettier": "^1.5.3",
     "react-addons-test-utils": "15.3.2",
     "react-dom": "15.3.2",
     "sass-loader": "4.1.1",
@@ -67,15 +71,16 @@
     "type": "git",
     "url": "https://github.com/ajainarayanan/react-dag.git"
   },
-  "keywords": [
-    "react-dag",
-    "dag",
-    "jsplumb",
-    "reactjs",
-    "redux"
-  ],
+  "keywords": ["react-dag", "dag", "jsplumb", "reactjs", "redux"],
   "bugs": {
     "url": "https://github.com/ajainarayanan/react-dag/issues"
   },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier --parser flow --single-quote --print-width=90 --trailing-comma=all --write",
+      "git add"
+    ]
+  },
+  "pre-commit": "lint-staged",
   "homepage": "https://github.com/ajainarayanan/react-dag"
 }
