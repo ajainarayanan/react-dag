@@ -48,7 +48,9 @@ export const sinkSettings = extend({
   anchor: [ 0.5, 1, -1, 0, -26, -43, 'sinkAnchor'],
   connectorStyle: connectorStyle
 }, commonSettings);
-
+export const DraggableSettings = {
+  containment: false
+};
 export function getSettings(isDisabled: ?boolean = false) {
   var settings: Object = {
     transformSource: {},
@@ -61,7 +63,8 @@ export function getSettings(isDisabled: ?boolean = false) {
       source: extend(sourceSettings, disabledConnectorOverlays),
       sink: extend(sinkSettings, disabledConnectorOverlays),
       transformSource: {},
-      transformSink: {}
+      transformSink: {},
+      draggable: DraggableSettings
     };
   } else {
     settings = {
@@ -70,7 +73,8 @@ export function getSettings(isDisabled: ?boolean = false) {
       source: extend(sourceSettings, connectorOverlays),
       sink: extend(sinkSettings, connectorOverlays),
       transformSource: {},
-      transformSink: {}
+      transformSink: {},
+      draggable: DraggableSettings
     };
   }
 

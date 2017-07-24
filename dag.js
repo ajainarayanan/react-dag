@@ -107,6 +107,7 @@ export default class DAG extends Component {
   makeNodesDraggable() {
     let nodes = document.querySelectorAll('#dag-container .node');
     this.instance.draggable(nodes, {
+      containment: this.settings.draggable.containment,
       start: () => {
         console.log('Starting to drag');
       },
