@@ -1,6 +1,10 @@
-# react-dag
+# React-dag
 
-This is a base implementation of wrapping jsplumb with react + redux to be more usable in a react based environment.
+![demo](http://i.imgur.com/LlV5ZpA.gifv)
+
+React wrapper for jsplumb. Helps in managing a Directed Acyclic Graph using Redux. It allows enhancing the store with additional features (Zoomin/Zoomout? History?)
+
+A demo of this module being used can be found here [Demo](react-dag-app.surge.sh).
 
 #### Install
 
