@@ -1,4 +1,4 @@
-import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import shortid from 'shortid';
 
 const STOREACTIONS = {
@@ -8,21 +8,21 @@ const STOREACTIONS = {
   ADDCONNECTION: 'ADD_CONNECTIONS',
   SETCONNECTIONS: 'SET_CONNECTIONS',
   RESET: 'RESET',
-  GRAPHLOADING: 'GRAPHLOADING'
+  GRAPHLOADING: 'GRAPHLOADING',
 };
 
-export {STOREACTIONS};
+export { STOREACTIONS };
 
 let nodes = (state = [], action = {}) => {
-  switch(action.type) {
+  switch (action.type) {
     case STOREACTIONS.ADDNODE:
       return [
         ...state,
         {
-          id: `N-${shortid.generate()}`,
+          id: action.payload.id || `N-${shortid.generate()}`,
           label: action.payload.label,
-          type: action.payload.type
-        }
+          type: action.payload.type,
+        },
       ];
     case STOREACTIONS.UPDATENODE:
       return state.map(node => {
@@ -33,7 +33,7 @@ let nodes = (state = [], action = {}) => {
         return node;
       });
     case STOREACTIONS.REMOVENODE:
-      return state.filter(node => (node.id !== action.payload.nodeId));
+      return state.filter(node => node.id !== action.payload.nodeId);
     case STOREACTIONS.RESET:
       return [];
     default:
@@ -41,14 +41,14 @@ let nodes = (state = [], action = {}) => {
   }
 };
 const connections = (state = [], action = {}) => {
-  switch(action.type) {
+  switch (action.type) {
     case STOREACTIONS.ADDCONNECTION:
       return [
         ...state,
         {
           from: action.connection.from,
-          to: action.connection.to
-        }
+          to: action.connection.to,
+        },
       ];
     case STOREACTIONS.SETCONNECTIONS:
       return [...action.payload.connections];
@@ -60,9 +60,9 @@ const connections = (state = [], action = {}) => {
 };
 
 const graph = (state = {}, action = {}) => {
-  switch(action.type) {
+  switch (action.type) {
     case STOREACTIONS.GRAPHLOADING:
-      return Object.assign({}, state, {loading: action.payload.loading});
+      return Object.assign({}, state, { loading: action.payload.loading });
     case STOREACTIONS.RESET:
       return {};
     default:
@@ -72,10 +72,10 @@ const graph = (state = {}, action = {}) => {
 
 const defaultReducersMap = () => {
   return {
-    nodes: [ (state = [], action = {}) => state ],
-    graph: [ (state = {}, action = {}) => state ],
-    connections: [ (state = [], action = {}) => state ]
-  }
+    nodes: [(state = [], action = {}) => state],
+    graph: [(state = {}, action = {}) => state],
+    connections: [(state = [], action = {}) => state],
+  };
 };
 
 let combinedReducers = function(reducersMap = defaultReducersMap()) {
@@ -90,12 +90,15 @@ let combinedReducers = function(reducersMap = defaultReducersMap()) {
   };
   let nodesReducers = [nodes].concat(getReducer(reducersMap, 'nodes', defaultValues));
   let graphReducers = [graph].concat(getReducer(reducersMap, 'graph', defaultValues));
-  let connectionsReducers = [connections].concat(getReducer(reducersMap, 'connections', defaultValues));
+  let connectionsReducers = [connections].concat(
+    getReducer(reducersMap, 'connections', defaultValues),
+  );
 
-  const genericReducerFn  = function(reducers, state, action) {
-    if(reducers.length > 1){
-      return reducers
-        .reduce((prev, curr) => curr.bind(null, prev(state, action), action))();
+  const genericReducerFn = function(reducers, state, action) {
+    if (reducers.length > 1) {
+      return reducers.reduce((prev, curr) =>
+        curr.bind(null, prev(state, action), action),
+      )();
     } else {
       return reducers[0]();
     }
@@ -109,22 +112,25 @@ let combinedReducers = function(reducersMap = defaultReducersMap()) {
     },
     graph: (state, action) => {
       return genericReducerFn(graphReducers, state, action);
-    }
+    },
   });
 };
 
-export default function configureStore(data, reducersMap, middlewares = [], enhancers= []) {
+export default function configureStore(
+  data,
+  reducersMap,
+  middlewares = [],
+  enhancers = [],
+) {
   let store = createStore(
     combinedReducers(reducersMap),
     data,
     compose.apply(
       null,
-      [
-        applyMiddleware.apply(null, middlewares)
-      ].concat(enhancers.map(enhancer => enhancer()))
-    )
+      [applyMiddleware.apply(null, middlewares)].concat(
+        enhancers.map(enhancer => enhancer()),
+      ),
+    ),
   );
   return store;
 }
-
-

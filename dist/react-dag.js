@@ -647,11 +647,11 @@
                 nodes: n.state.nodes,
                 onNodesClick:
                   'function' != typeof n.props.onNodesClick
-                    ? function() {}
+                    ? null
                     : n.props.onNodesClick.bind(null, n.instance),
                 renderNode:
                   'function' != typeof n.props.renderNode
-                    ? function() {}
+                    ? null
                     : n.props.renderNode.bind(null, n.instance),
                 jsPlumbInstance: n.instance,
               });
@@ -704,7 +704,7 @@
                   );
                 E.default.setContainer(
                   n,
-                ), (t.instance = E.default.getInstance(e)), t.instance.bind('connection', t.makeConnections.bind(t)), t.instance.bind('connectionDetached', t.makeConnections.bind(t));
+                ), (t.instance = E.default.getInstance(e)), (window.instance = t.instance), t.instance.bind('connection', t.makeConnections.bind(t)), t.instance.bind('connectionDetached', t.makeConnections.bind(t));
               }), setTimeout(function() {
                 t.toggleLoading(
                   !1,
@@ -953,7 +953,7 @@
             case l.ADDNODE:
               return [].concat(i(t), [
                 {
-                  id: 'N-' + a.default.generate(),
+                  id: e.payload.id || 'N-' + a.default.generate(),
                   label: e.payload.label,
                   type: e.payload.type,
                 },

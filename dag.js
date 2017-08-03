@@ -11,7 +11,6 @@ import isNil from 'lodash/isNil';
 import NodesList from './components/NodesList/NodesList';
 
 require('./styles/dag.scss');
-// $FlowFixMe
 import jsPlumb from 'jsPlumb';
 
 type propType = {
@@ -26,23 +25,25 @@ type propType = {
   renderNode?: (x: Object) => ?React$Element<any>,
   onNodesClick?: (x: Object) => void,
 };
+type stateType = {
+  componentId: string,
+  graph: Object,
+  nodes: Array<Object>,
+};
 export { configureStore, STOREACTIONS };
 export default class DAG extends Component {
   store: Object;
   settings: Object;
   instance: Object;
+  state: stateType;
+  storeSub: () => void;
+
   static defaultProps = {
     onNodesClick: () => {},
     additionalReducersMap: {},
     enhancers: [],
     middlewares: [],
   };
-  state: {
-    componentId: string,
-    graph: Object,
-    nodes: Array<Object>,
-  };
-  storeSub: () => void;
   constructor(props: propType) {
     super(props);
     this.props = props;
@@ -85,6 +86,7 @@ export default class DAG extends Component {
       let container = document.querySelector(`#${this.state.componentId} #dag-container`);
       jsPlumb.setContainer(container);
       this.instance = jsPlumb.getInstance(dagSettings);
+      window.instance = this.instance;
       this.instance.bind('connection', this.makeConnections.bind(this));
       this.instance.bind('connectionDetached', this.makeConnections.bind(this));
     });
@@ -240,12 +242,12 @@ export default class DAG extends Component {
           nodes={this.state.nodes}
           onNodesClick={
             typeof this.props.onNodesClick !== 'function'
-              ? () => {}
+              ? null
               : this.props.onNodesClick.bind(null, this.instance)
           }
           renderNode={
             typeof this.props.renderNode !== 'function'
-              ? () => {}
+              ? null
               : this.props.renderNode.bind(null, this.instance)
           }
           jsPlumbInstance={this.instance}

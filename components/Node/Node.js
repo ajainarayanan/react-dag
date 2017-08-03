@@ -10,7 +10,7 @@ type propType = {
   id: string,
   type: string,
   onNodesClick: (x: Object) => void,
-  jsPlumbInstance: Object
+  jsPlumbInstance: Object,
 };
 
 export default class Node extends Component {
@@ -18,10 +18,10 @@ export default class Node extends Component {
     style: Object,
     label: string,
     id: string,
-    type: string
+    type: string,
   };
   static defaultProps = {
-    onClick: () => {}
+    onClick: () => {},
   };
   constructor(props: propType) {
     super(props);
@@ -30,7 +30,7 @@ export default class Node extends Component {
       style,
       type,
       label,
-      id
+      id,
     };
   }
   componentWillReceiveProps(newProps: propType) {
@@ -39,7 +39,7 @@ export default class Node extends Component {
       style,
       type,
       label,
-      id
+      id,
     });
   }
   componentWillUnmount() {
@@ -53,10 +53,10 @@ export default class Node extends Component {
         style={this.state.style}
         onClick={this.props.onNodesClick.bind(null, 'click', this.state)}
       >
-        <div className={classnames({'dag-node': true, [this.state.type]: true})}>
+        <div className={classnames({ 'dag-node': true, [this.state.type]: true })}>
           <strong
             className="close-btn"
-            onClick={(e) => {
+            onClick={e => {
               this.props.onNodesClick.bind(null, 'close', this.state);
               e.stopPropagation();
               e.nativeEvent.stopImmediatePropagation();
@@ -67,7 +67,9 @@ export default class Node extends Component {
             x
           </strong>
         </div>
-        <div className="label">{this.state.label}</div>
+        <div className="label">
+          {this.state.label}
+        </div>
       </div>
     );
   }

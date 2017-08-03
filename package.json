@@ -4,8 +4,9 @@
   "description": "This is a base implementation of wrapping jsplumb with react + redux to be more usable in a react based environment",
   "main": "dist/react-dag.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-build": "webpack --watch -d",
+    "test": "jest",
+    "test-watch": "jest --watch",
+    "dev-build": "NODE_ENV=test webpack --watch -d",
     "prod-build": "NODE_ENV=production webpack -p",
     "lib-test-build": "NODE_ENV=libtest webpack -d",
     "precommit": "lint-staged"
@@ -24,6 +25,7 @@
   "devDependencies": {
     "babel-core": "6.17.0",
     "babel-eslint": "6.1.2",
+    "babel-jest": "^20.0.3",
     "babel-loader": "6.2.5",
     "babel-plugin-lodash": "3.2.9",
     "babel-plugin-transform-flow-strip-types": "6.14.0",
@@ -45,6 +47,7 @@
     "husky": "^0.14.3",
     "ignore-styles": "5.0.1",
     "imports-loader": "0.6.5",
+    "jest": "^20.0.4",
     "jsdom": "9.6.0",
     "lint-staged": "^4.0.2",
     "lodash-webpack-plugin": "0.10.2",
@@ -80,6 +83,13 @@
       "prettier \"{,!(dist)/}*.js {,!(flow-typed)/**/}*.js\" --parser flow --single-quote --print-width=90 --trailing-comma=all --write",
       "git add"
     ]
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      ".scss$": "<rootDir>/__mocks__/styleMocks.js"
+    }
   },
   "pre-commit": "lint-staged",
   "homepage": "https://github.com/ajainarayanan/react-dag"
