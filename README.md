@@ -1,6 +1,6 @@
 # React-dag
 
-![demo](http://i.imgur.com/LlV5ZpA.gifv)
+![Imgur](http://i.imgur.com/LlV5ZpA.gif)
 
 React wrapper for jsplumb. Helps in managing a Directed Acyclic Graph using Redux. It allows enhancing the store with additional features (Zoomin/Zoomout? History?)
 
