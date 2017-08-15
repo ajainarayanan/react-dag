@@ -4,7 +4,7 @@
 
 React wrapper for jsplumb. Helps in managing a Directed Acyclic Graph using Redux. It allows enhancing the store with additional features (Zoomin/Zoomout? History?)
 
-A demo of this module being used can be found here [Demo](react-dag-app.surge.sh).
+A demo of this module being used can be found here [Demo](http://react-dag-app.surge.sh).
 
 #### Install
 
