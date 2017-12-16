@@ -1,0 +1,11 @@
+/src/**
+/node_modules/**
+/dev/**
+/.vscode
+.DS_Store
+.babelrc
+.eslintrc
+ts*.*
+/test/**
+/__mocks__/**
+!index.d.ts

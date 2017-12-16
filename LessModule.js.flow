@@ -1,4 +1,0 @@
-/* @flow */
-
-// Less modules have a `className` export which is a string
-declare export var className: Object;
