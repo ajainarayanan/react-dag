@@ -1,11 +1,10 @@
 import "jsplumb";
-
 import * as Models from "./models";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as uuidv4 from "uuid/v4";
-
 import DefaultNode, { INodeProps } from "./components/DefaultNode";
+import Pan from "./components/Pan";
 import {
   IConnectionParams,
   IConnectionRule,
@@ -356,16 +355,18 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
           width: "100%",
         }}
       >
-        <div
-          style={{
-            height: "inherit",
-            position: "absolute",
-            width: "inherit",
-          }}
-          id={DAG_CONTAINER_ID}
-        >
-          {this.renderChildren()}
-        </div>
+        <Pan>
+          <div
+            style={{
+              height: "inherit",
+              position: "absolute",
+              width: "inherit",
+            }}
+            id={DAG_CONTAINER_ID}
+          >
+            {this.renderChildren()}
+          </div>
+        </Pan>
       </div>
     );
   }
