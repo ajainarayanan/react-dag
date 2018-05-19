@@ -58,6 +58,7 @@
     "./dist"
   ],
   "include": [
+    "./node_modules/react-pan-zoom/dist/react-pan-zoom.d.ts",
     "./node_modules/@types/**/*.d.ts",
     "./node_modules/jsplumb/index.d.ts",
     "./typings/*.d.ts",
