@@ -326,7 +326,6 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
         key={DAG_CONTAINER_ID}
         className={this.props.className}
         style={{
-          height: "100%",
           overflow: "hidden",
           position: "relative",
           width: "100%",
