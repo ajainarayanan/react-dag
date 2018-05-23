@@ -1,11 +1,10 @@
 import "jsplumb";
-
 import * as Models from "./models";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as uuidv4 from "uuid/v4";
-
 import DefaultNode, { INodeProps } from "./components/DefaultNode";
+import ReactPanZoom from "@ajainarayanan/react-pan-zoom";
 import {
   IConnectionParams,
   IConnectionRule,
@@ -129,6 +128,7 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
   public componentWillReceiveProps(nextProps: IDAGProps) {
     const { nodes, zoom, connections } = nextProps;
     this.setState({ nodes, zoom, connections });
+    this.state.jsPlumbInstance.setZoom(zoom, true);
   }
 
   public componentDidMount() {
@@ -147,30 +147,6 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
       });
     });
   }
-
-  public componentDidUpdate() {
-    if (this.state.isJsPlumbInstanceCreated) {
-      this.setZoom();
-    }
-  }
-
-  private setZoom = () => {
-    const el = this.state.jsPlumbInstance.getContainer();
-    const transformOrigin = [0.5, 0.5];
-    const browserPrefix = ["webkit", "moz", "ms", "o"];
-    const s = `scale(${this.state.zoom})`;
-    const style = `${transformOrigin[0] * 100}% ${transformOrigin[1] * 100}%`;
-
-    for (const bPrefix of browserPrefix) {
-      el.style[`${bPrefix}Transform`] = s;
-      el.style[`${bPrefix}TransformOrigin`] = style;
-    }
-
-    el.style.transform = s;
-    el.style.transformOrigin = style;
-
-    this.state.jsPlumbInstance.setZoom(this.state.zoom, true);
-  };
 
   private registerTypes = (jsPlumbInstance: jsPlumbInstance) => {
     if (typeof this.props.registerTypes === "undefined") {
@@ -350,22 +326,27 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
         key={DAG_CONTAINER_ID}
         className={this.props.className}
         style={{
-          height: "100%",
           overflow: "hidden",
           position: "relative",
           width: "100%",
         }}
       >
-        <div
-          style={{
-            height: "inherit",
-            position: "absolute",
-            width: "inherit",
-          }}
-          id={DAG_CONTAINER_ID}
+        <ReactPanZoom
+          height="100%"
+          width="100%"
+          zoom={this.state.zoom}
         >
-          {this.renderChildren()}
-        </div>
+          <div
+            style={{
+              height: "inherit",
+              position: "absolute",
+              width: "inherit",
+            }}
+            id={DAG_CONTAINER_ID}
+          >
+            {this.renderChildren()}
+          </div>
+        </ReactPanZoom>
       </div>
     );
   }

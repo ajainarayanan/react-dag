@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@ajainarayanan/react-pan-zoom@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@ajainarayanan/react-pan-zoom/-/react-pan-zoom-0.0.1.tgz#2e4c4cf8df186d6d388629a38e39a3818fbc660c"
+
 "@epegzz/sass-vars-loader@^2.0.2":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@epegzz/sass-vars-loader/-/sass-vars-loader-2.2.1.tgz#077b6871baf13d32222d689507a3a6bc178ed687"
