@@ -46,6 +46,9 @@ export interface IDAGProps {
   registerTypes?: IRegisterTypesProps;
   nodes: INode[];
   zoom: number;
+  panPositionX?: number;
+  panPositionY?: number;
+  onPanMove?: (x: number, y: number) => void;
 }
 
 export interface IDAGState {
@@ -335,6 +338,13 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
           height="100%"
           width="100%"
           zoom={this.state.zoom}
+          pandx={this.props.panPositionX || 0}
+          pandy={this.props.panPositionY || 0}
+          onPan={(x, y) => {
+            if (this.props.onPanMove && typeof this.props.onPanMove === "function") {
+              this.props.onPanMove(x, y);
+            }
+          }}
         >
           <div
             style={{
