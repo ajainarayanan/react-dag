@@ -45,6 +45,9 @@ export interface IDAGProps {
   registerTypes?: IRegisterTypesProps;
   nodes: INode[];
   zoom: number;
+  panPositionX?: number;
+  panPositionY?: number;
+  onPanMove?: (x: number, y: number) => void;
 }
 export interface IDAGState {
   jsPlumbInstance: jsPlumbInstance;
