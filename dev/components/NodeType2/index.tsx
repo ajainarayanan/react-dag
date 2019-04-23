@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { endPointStyles, nodeStyles, nodeWrapperStyles } from "../NodeType1";
+import { endPointStyles, nodeStyles, nodeWrapperStyles } from '../NodeType1';
 
-import DefaultNode from "../../../src/components/DefaultNode";
-import { css } from "glamor";
-import { getSettings } from "../../dag-settings";
-import { theme } from "../../styles";
+import DefaultNode from '../../../src/components/DefaultNode';
+import { css } from 'glamor';
+import { getSettings } from '../../dag-settings';
+import { theme } from '../../styles';
 
 const modNodeStyle = css({
   border: `2px solid ${theme.main.colors.teal}`,
@@ -38,8 +38,8 @@ export default class NodeType2 extends DefaultNode {
       ],
       makeTargetParams: {
         allowLoopback: false,
-        anchor: "ContinuousLeft",
-        dropOptions: { hoverClass: "drag-hover" },
+        anchor: 'ContinuousLeft',
+        dropOptions: { hoverClass: 'drag-hover' },
         isTarget: true,
         uuid: `${this.props.id}-DottedEndPoint`,
       },
@@ -68,7 +68,7 @@ export default class NodeType2 extends DefaultNode {
         </div>
         <div
           id={`${this.props.id}-right`}
-          ref={ref => (this.rightEndpointRef = ref)}
+          ref={(ref) => (this.rightEndpointRef = ref)}
           className={`${endPointStyles} ${modEndpointStyles} right`}
         />
       </div>

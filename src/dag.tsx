@@ -1,21 +1,10 @@
-import "jsplumb";
-import * as Models from "./models";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as uuidv4 from "uuid/v4";
-import DefaultNode, { INodeProps } from "./components/DefaultNode";
-import ReactPanZoom from "@ajainarayanan/react-pan-zoom";
-import {
-  IConnectionParams,
-  IConnectionRule,
-  IConnections,
-  IData,
-  IEndPointArgs,
-  IInitNodeProps,
-  INode,
-} from "./models";
-
-import { Children } from "react";
+import 'jsplumb';
+import * as Models from './models';
+import * as React from 'react';
+import * as uuidv4 from 'uuid/v4';
+import DefaultNode, { INodeProps } from './components/DefaultNode';
+import ReactPanZoom from '@ajainarayanan/react-pan-zoom';
+import { IConnectionParams, IConnectionRule, IInitNodeProps, INode, endpointUUID } from './models';
 
 export interface IEventProps {
   [anyProp: string]: (...args: any[]) => void;
@@ -98,9 +87,7 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
   private addConnection = (connection: IConnectionParams) => {
     if (
       this.state.connections.find(
-        conn =>
-          conn.sourceId === connection.sourceId &&
-          conn.targetId === connection.targetId
+        (conn) => conn.sourceId === connection.sourceId && conn.targetId === connection.targetId
       )
     ) {
       return;
@@ -115,10 +102,7 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
     this.setState({
       connections: this.state.connections.filter(
         (conn: IConnectionParams) =>
-          !(
-            conn.sourceId === connection.sourceId &&
-            conn.targetId === connection.targetId
-          )
+          !(conn.sourceId === connection.sourceId && conn.targetId === connection.targetId)
       ),
     });
     this.updateParent();
@@ -153,8 +137,8 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
         Container: DAG_CONTAINER_ID,
       });
       jsPlumbInstance.setContainer(document.getElementById(DAG_CONTAINER_ID));
-      jsPlumbInstance.bind("connection", this.onConnection);
-      jsPlumbInstance.bind("connectionDetached", this.onConnectionDetached);
+      jsPlumbInstance.bind('connection', this.onConnection);
+      jsPlumbInstance.bind('connectionDetached', this.onConnectionDetached);
       this.setEventListeners(jsPlumbInstance);
       this.registerTypes(jsPlumbInstance);
       this.setState({
@@ -165,7 +149,7 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
   }
 
   private registerTypes = (jsPlumbInstance: jsPlumbInstance) => {
-    if (typeof this.props.registerTypes === "undefined") {
+    if (typeof this.props.registerTypes === 'undefined') {
       return;
     }
     const { connections, endpoints } = this.props.registerTypes;
@@ -178,12 +162,9 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
   };
 
   private setEventListeners = (jsPlumbInstance: jsPlumbInstance) => {
-    if (typeof this.props.eventListeners !== "undefined") {
-      Object.keys(this.props.eventListeners).forEach(event => {
-        if (
-          this.props.eventListeners &&
-          typeof this.props.eventListeners[event] !== "undefined"
-        ) {
+    if (typeof this.props.eventListeners !== 'undefined') {
+      Object.keys(this.props.eventListeners).forEach((event) => {
+        if (this.props.eventListeners && typeof this.props.eventListeners[event] !== 'undefined') {
           jsPlumbInstance.bind(event, this.props.eventListeners[event]);
         }
       });
@@ -196,7 +177,7 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
     makeSourceParams = {},
     makeTargetParams = {},
   }: IInitNodeProps) => {
-    endPointParams.map(endpoint => {
+    endPointParams.map((endpoint) => {
       const { element, params, referenceParams } = endpoint;
       this.addEndpoint(element, params, referenceParams);
     });
@@ -215,11 +196,8 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
       return;
     }
     this.state.jsPlumbInstance.deleteEveryConnection();
-    this.props.connections.forEach(connObj => {
-      const newConnObj = this.getNewConnectionObj(
-        connObj,
-        this.props.connectionEncoders
-      );
+    this.props.connections.forEach((connObj) => {
+      const newConnObj = this.getNewConnectionObj(connObj, this.props.connectionEncoders);
       if (
         (this.state.jsPlumbInstance.getEndpoints(newConnObj.sourceId).length ||
           this.state.jsPlumbInstance.isSource(newConnObj.sourceId)) &&
@@ -269,38 +247,26 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
     };
   };
 
-  public onConnection = (
-    connObj: IConnectionParams,
-    originalEvent: boolean
-  ) => {
+  public onConnection = (connObj: IConnectionParams, originalEvent: boolean) => {
     if (!originalEvent) {
       return;
     }
-    const newConnObj = this.getNewConnectionObj(
-      connObj,
-      this.props.connectionDecoders
-    );
+    const newConnObj = this.getNewConnectionObj(connObj, this.props.connectionDecoders);
     this.addConnection(newConnObj);
     this.state.jsPlumbInstance.repaintEverything();
   };
 
-  public onConnectionDetached = (
-    detachedConnObj: IConnectionParams,
-    originalEvent: boolean
-  ) => {
+  public onConnectionDetached = (detachedConnObj: IConnectionParams, originalEvent: boolean) => {
     if (!originalEvent) {
       return;
     }
-    const newConnObj = this.getNewConnectionObj(
-      detachedConnObj,
-      this.props.connectionDecoders
-    );
+    const newConnObj = this.getNewConnectionObj(detachedConnObj, this.props.connectionDecoders);
     this.removeConnection(newConnObj);
     this.state.jsPlumbInstance.repaintEverything();
   };
 
   private getNodeConfig = (nodeId: string) => {
-    const n = this.props.nodes.find(node => node.id === nodeId);
+    const n = this.props.nodes.find((node) => node.id === nodeId);
     if (!n) {
       return {};
     }
@@ -313,15 +279,15 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
 
   private renderChildren() {
     if (!this.state.isJsPlumbInstanceCreated) {
-      return "...loading";
+      return '...loading';
     }
 
-    return React.Children.map(this.props.children, child => {
+    return React.Children.map(this.props.children, (child) => {
       if (
-        typeof child === "string" ||
-        typeof child === "number" ||
+        typeof child === 'string' ||
+        typeof child === 'number' ||
         child === null ||
-        typeof child === "undefined"
+        typeof child === 'undefined'
       ) {
         return child;
       }
@@ -342,9 +308,9 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
         key={DAG_CONTAINER_ID}
         className={this.props.className}
         style={{
-          overflow: "hidden",
-          position: "relative",
-          width: "100%",
+          overflow: 'hidden',
+          position: 'relative',
+          width: '100%',
         }}
       >
         <ReactPanZoom
@@ -354,16 +320,16 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
           pandx={this.props.panPositionX || 0}
           pandy={this.props.panPositionY || 0}
           onPan={(x, y) => {
-            if (this.props.onPanMove && typeof this.props.onPanMove === "function") {
+            if (this.props.onPanMove && typeof this.props.onPanMove === 'function') {
               this.props.onPanMove(x, y);
             }
           }}
         >
           <div
             style={{
-              height: "inherit",
-              position: "absolute",
-              width: "inherit",
+              height: 'inherit',
+              position: 'absolute',
+              width: 'inherit',
             }}
             id={DAG_CONTAINER_ID}
           >

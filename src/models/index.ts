@@ -1,4 +1,4 @@
-import "jsplumb";
+import 'jsplumb';
 
 export interface INodeConfig {
   label?: string;
