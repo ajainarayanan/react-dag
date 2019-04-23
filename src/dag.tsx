@@ -75,11 +75,24 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
     zoom: 1,
   };
 
-  private removeNode = (nodeId: string) => {
-    this.setState({
-      nodes: this.state.nodes.filter((node: INode) => node.id !== nodeId),
-    });
-    this.updateParent();
+  private removeNode = (nodeId: string, endpoints: endpointUUID[]) => {
+    endpoints.forEach(this.state.jsPlumbInstance.deleteEndpoint);
+    this.state.jsPlumbInstance.deleteConnectionsForElement(nodeId);
+    this.state.jsPlumbInstance.repaintEverything();
+    this.setState(
+      {
+        connections: this.state.jsPlumbInstance
+          .getAllConnections()
+          .map((connObj: { sourceId: string; targetId: string }) => ({
+            sourceId: connObj.sourceId,
+            targetId: connObj.targetId,
+          })),
+        nodes: this.state.nodes.filter((node: INode) => node.id !== nodeId),
+      },
+      () => {
+        this.updateParent();
+      }
+    );
   };
 
   private addConnection = (connection: IConnectionParams) => {
@@ -294,8 +307,8 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
     return n.config;
   };
 
-  public onDeleteNode = (nodeId: string) => {
-    this.removeNode(nodeId);
+  public onDeleteNode = (nodeId: string, endpoints: endpointUUID[]) => {
+    this.removeNode(nodeId, endpoints);
   };
 
   private renderChildren() {

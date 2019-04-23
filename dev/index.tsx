@@ -233,7 +233,7 @@ class App extends React.Component {
       >
         {this.state.nodes.map((node, i) => {
           const Component = getComponent(node.config.type);
-          return <Component key={i} id={node.id} />;
+          return <Component key={node.id} id={node.id} />;
         })}
       </DAG>,
     ];

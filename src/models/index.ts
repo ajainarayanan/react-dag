@@ -52,5 +52,6 @@ export const DEFAULTSTORESTATE: IData = {
   nodes: [],
 };
 
+export type endpointUUID = string;
 export const DEFAULT_NODES = [];
 export const DEFAULT_CONNECTIONS = [];

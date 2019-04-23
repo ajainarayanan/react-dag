@@ -11,6 +11,12 @@ const modNodeStyle = css({
   border: `2px solid ${theme.main.colors.teal}`,
 });
 
+const closeButton = css({
+  position: 'absolute',
+  top: '5px',
+  right: '10px',
+});
+
 const modEndpointStyles = css({
   zIndex: 20001,
 });
@@ -41,6 +47,12 @@ export default class NodeType2 extends DefaultNode {
     };
     this.props.initNode(initConfig);
   }
+  private delete = () => {
+    this.props.onDelete(this.props.id, [
+      `${this.props.id}-DottedEndpoint-right`,
+      `${this.props.id}-DottedEndPoint`,
+    ]);
+  };
   public render() {
     return (
       <div
@@ -50,6 +62,9 @@ export default class NodeType2 extends DefaultNode {
       >
         <div className={`${nodeWrapperStyles}`}>
           {this.props.config.label ? this.props.config.label : this.props.id}
+          <span className={`${closeButton}`} onClick={this.delete}>
+            X
+          </span>
         </div>
         <div
           id={`${this.props.id}-right`}
