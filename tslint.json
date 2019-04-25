@@ -1,12 +1,25 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended"],
+  "extends": [
+    "tslint:recommended"
+  ],
   "jsRules": {},
   "rules": {
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ],
     "arrow-parens": false,
-    "object-literal-key-quotes": [false],
+    "object-literal-key-quotes": [
+      false
+    ],
     "member-ordering": false,
-    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "semicolon": [
+      true,
+      "always",
+      "ignore-bound-class-methods"
+    ],
     "ordered-imports": false,
     "trailing-comma": [
       true,

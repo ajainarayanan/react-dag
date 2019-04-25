@@ -1,29 +1,25 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import {
   conditionConnectionDecoder,
   conditionConnectionEncoder,
   transformConnectionDecoder,
   transformConnectionEncoder,
-} from "./connectionReducers";
-import {
-  defaultSettings,
-  dottedConnectionStyle,
-  selectedConnectionStyle,
-} from "./dag-settings";
-import { onConnectionEventHandler, onEndPointClick } from "./eventHandlers";
-import { setGlobal, theme } from "./styles";
+} from './connectionReducers';
+import { defaultSettings, dottedConnectionStyle, selectedConnectionStyle } from './dag-settings';
+import { onConnectionEventHandler, onEndPointClick } from './eventHandlers';
+import { setGlobal, theme } from './styles';
 
-import DAG from "../src/dag";
-import DefaultNode from "../src/components/DefaultNode";
-import NodeType1 from "./components/NodeType1";
-import NodeType2 from "./components/NodeType2";
-import NodeType3 from "./components/NodeType3";
-import { css } from "glamor";
-import dagre from "dagre";
-import { data } from "./data";
-import uuidv4 from "uuid/v4";
+import DAG from '../src/dag';
+import DefaultNode from '../src/components/DefaultNode';
+import NodeType1 from './components/NodeType1';
+import NodeType2 from './components/NodeType2';
+import NodeType3 from './components/NodeType3';
+import { css } from 'glamor';
+import dagre from 'dagre';
+import { data } from './data';
+import uuidv4 from 'uuid/v4';
 
 /* tslint:disable */
 const cloneDeep = require("lodash.clonedeep");
@@ -233,7 +229,7 @@ class App extends React.Component {
       >
         {this.state.nodes.map((node, i) => {
           const Component = getComponent(node.config.type);
-          return <Component key={i} id={node.id} />;
+          return <Component key={node.id} id={node.id} />;
         })}
       </DAG>,
     ];

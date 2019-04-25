@@ -1,14 +1,20 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { endPointStyles, nodeStyles, nodeWrapperStyles } from "../NodeType1";
+import { endPointStyles, nodeStyles, nodeWrapperStyles } from '../NodeType1';
 
-import DefaultNode from "../../../src/components/DefaultNode";
-import { css } from "glamor";
-import { getSettings } from "../../dag-settings";
-import { theme } from "../../styles";
+import DefaultNode from '../../../src/components/DefaultNode';
+import { css } from 'glamor';
+import { getSettings } from '../../dag-settings';
+import { theme } from '../../styles';
 
 const modNodeStyle = css({
   border: `2px solid ${theme.main.colors.teal}`,
+});
+
+const closeButton = css({
+  position: 'absolute',
+  top: '5px',
+  right: '10px',
 });
 
 const modEndpointStyles = css({
@@ -32,8 +38,8 @@ export default class NodeType2 extends DefaultNode {
       ],
       makeTargetParams: {
         allowLoopback: false,
-        anchor: "ContinuousLeft",
-        dropOptions: { hoverClass: "drag-hover" },
+        anchor: 'ContinuousLeft',
+        dropOptions: { hoverClass: 'drag-hover' },
         isTarget: true,
         uuid: `${this.props.id}-DottedEndPoint`,
       },
@@ -41,6 +47,12 @@ export default class NodeType2 extends DefaultNode {
     };
     this.props.initNode(initConfig);
   }
+  private delete = () => {
+    this.props.onDelete(this.props.id, [
+      `${this.props.id}-DottedEndpoint-right`,
+      `${this.props.id}-DottedEndPoint`,
+    ]);
+  };
   public render() {
     return (
       <div
@@ -50,10 +62,13 @@ export default class NodeType2 extends DefaultNode {
       >
         <div className={`${nodeWrapperStyles}`}>
           {this.props.config.label ? this.props.config.label : this.props.id}
+          <span className={`${closeButton}`} onClick={this.delete}>
+            X
+          </span>
         </div>
         <div
           id={`${this.props.id}-right`}
-          ref={ref => (this.rightEndpointRef = ref)}
+          ref={(ref) => (this.rightEndpointRef = ref)}
           className={`${endPointStyles} ${modEndpointStyles} right`}
         />
       </div>

@@ -1,20 +1,13 @@
-import "jsplumb";
+import 'jsplumb';
 
-import * as React from "react";
-
-import { IConnectionParams, IInitNodeProps } from "../../models";
-import {
-  IConnectionRule,
-  IEndPointArgs,
-  INode,
-  INodeConfig,
-} from "../../models";
+import * as React from 'react';
+import { INodeConfig, IInitNodeProps, endpointUUID } from '../../models';
 
 export interface INodeProps {
   id: string;
   config?: INodeConfig;
   initNode?: (initConfig: IInitNodeProps) => void;
-  onDelete?: () => void;
+  onDelete?: (nodeId: string, endpoints: endpointUUID[]) => void;
 }
 
 export default class DefaultNode extends React.Component<INodeProps, {}> {
@@ -28,24 +21,24 @@ export default class DefaultNode extends React.Component<INodeProps, {}> {
 
   public componentDidMount() {
     const source = {
-      endpoint: "Dot",
+      endpoint: 'Dot',
       isSource: true,
       maxConnections: -1, // -1 means unlimited connections
       paintStyle: {
         connectorStyle: {
           lineWidth: 2,
-          outlineColor: "transparent",
+          outlineColor: 'transparent',
           outlineWidth: 4,
-          strokeStyle: "#4e5568",
+          strokeStyle: '#4e5568',
           strokeWidth: 3,
         },
-        fill: "black",
+        fill: 'black',
         lineWidth: 3,
         radius: 5,
-        stroke: "black",
+        stroke: 'black',
       },
     };
-    if (this.props.initNode && typeof this.props.initNode === "function") {
+    if (this.props.initNode && typeof this.props.initNode === 'function') {
       const initConfig = {
         endPointParams: [
           {
@@ -61,11 +54,11 @@ export default class DefaultNode extends React.Component<INodeProps, {}> {
   }
   public render() {
     let style = {
-      border: "1px solid",
-      display: "inline-block",
-      height: "100px",
-      position: "absolute" as "absolute", // This is madness!!
-      width: "100px",
+      border: '1px solid',
+      display: 'inline-block',
+      height: '100px',
+      position: 'absolute' as 'absolute', // This is madness!!
+      width: '100px',
     };
     if (this.props.config) {
       style = {
@@ -74,10 +67,8 @@ export default class DefaultNode extends React.Component<INodeProps, {}> {
       };
     }
     return (
-      <div id={this.props.id} ref={ref => (this.rootRef = ref)} style={style}>
-        {this.props.config && this.props.config.label
-          ? this.props.config.label
-          : this.props.id}
+      <div id={this.props.id} ref={(ref) => (this.rootRef = ref)} style={style}>
+        {this.props.config && this.props.config.label ? this.props.config.label : this.props.id}
       </div>
     );
   }

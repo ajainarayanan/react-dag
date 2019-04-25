@@ -1,4 +1,4 @@
-import "jsplumb";
+import 'jsplumb';
 
 export interface INodeConfig {
   label?: string;
@@ -52,5 +52,6 @@ export const DEFAULTSTORESTATE: IData = {
   nodes: [],
 };
 
+export type endpointUUID = string;
 export const DEFAULT_NODES = [];
 export const DEFAULT_CONNECTIONS = [];
