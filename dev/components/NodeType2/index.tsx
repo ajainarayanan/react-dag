@@ -17,13 +17,11 @@ const closeButton = css({
   right: '10px',
 });
 
-const modEndpointStyles = css({
-  zIndex: 20001,
-});
+const modEndpointStyles = css({});
 export default class NodeType2 extends DefaultNode {
   private rightEndpointRef: HTMLElement | null;
   public componentDidMount() {
-    const { transformSource, transformSink } = getSettings() as any;
+    const { transformSource } = getSettings() as any;
     const initConfig = {
       endPointParams: [
         {
@@ -32,6 +30,7 @@ export default class NodeType2 extends DefaultNode {
             ...transformSource,
             isSource: true,
             uuid: `${this.props.id}-DottedEndpoint-right`,
+            cssClass: `${this.props.id}-DottedEndpoint-right`,
           },
           referenceParams: {},
         },
@@ -62,12 +61,12 @@ export default class NodeType2 extends DefaultNode {
       >
         <div className={`${nodeWrapperStyles}`}>
           {this.props.config.label ? this.props.config.label : this.props.id}
-          <span className={`${closeButton}`} onClick={this.delete}>
+          <span className={`${closeButton}`} data-cy="close-button" onClick={this.delete}>
             X
           </span>
         </div>
         <div
-          id={`${this.props.id}-right`}
+          id={`${this.props.id}-DottedEndpoint-right`}
           ref={(ref) => (this.rightEndpointRef = ref)}
           className={`${endPointStyles} ${modEndpointStyles} right`}
         />

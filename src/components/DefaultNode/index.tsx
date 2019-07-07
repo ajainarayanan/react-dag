@@ -21,6 +21,7 @@ export default class DefaultNode extends React.Component<INodeProps, {}> {
 
   public componentDidMount() {
     const source = {
+      cssClass: `${this.props.id}-source`,
       endpoint: 'Dot',
       isSource: true,
       maxConnections: -1, // -1 means unlimited connections

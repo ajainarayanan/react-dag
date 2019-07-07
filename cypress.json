@@ -1,0 +1,12 @@
+{
+  "baseUrl": "http://localhost:9000",
+  "env": {
+    "host": "localhost"
+  },
+  "video": false,
+  "chromeWebSecurity": false,
+  "supportFile": "cypress/support/index.js",
+  "defaultCommandTimeout": 20000,
+  "viewportWidth": 1280,
+  "viewportHeight": 800
+}

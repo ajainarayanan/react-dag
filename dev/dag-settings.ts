@@ -1,18 +1,18 @@
-import clone from "lodash/clone";
-import extend from "lodash/extend";
+import clone from 'lodash/clone';
+import extend from 'lodash/extend';
 
 const defaultConnectionStyle = {
   hoverPaintStyle: {
-    dashstyle: "solid",
+    dashstyle: 'solid',
     lineWidth: 4,
-    strokeStyle: "#58b7f6",
+    strokeStyle: '#58b7f6',
     strokeWidth: 3,
   },
   paintStyle: {
     lineWidth: 2,
-    outlineColor: "transparent",
+    outlineColor: 'transparent',
     outlineWidth: 4,
-    strokeStyle: "#4e5568",
+    strokeStyle: '#4e5568',
     strokeWidth: 3,
   },
 };
@@ -21,17 +21,17 @@ export const defaultSettings = Object.assign(
   {
     ConnectionOverlays: [
       [
-        "Arrow",
+        'Arrow',
         {
           foldback: 0.8,
-          id: "arrow",
+          id: 'arrow',
           length: 14,
           location: 1,
         },
       ],
     ],
     Connector: [
-      "Flowchart",
+      'Flowchart',
       {
         alwaysRespectStubs: true,
         cornerRadius: 20,
@@ -39,7 +39,7 @@ export const defaultSettings = Object.assign(
         stub: [10, 15],
       },
     ],
-    Endpoint: "Dot",
+    Endpoint: 'Dot',
     EndpointStyle: { radius: 10 },
   },
   /* tslint:disable */
@@ -50,19 +50,19 @@ export const defaultSettings = Object.assign(
 export const connectorStyle = {
   lineWidth: 2,
   radius: 5,
-  stroke: "black",
+  stroke: 'black',
   strokeWidth: 2,
 };
 
 export const commonSettings = {
-  endpoint: "Dot",
+  endpoint: 'Dot',
   maxConnections: -1, // -1 means unlimited connections
   paintStyle: {
     connectorStyle: defaultConnectionStyle.paintStyle,
-    fill: "black",
+    fill: 'black',
     lineWidth: 3,
     radius: 5,
-    stroke: "black",
+    stroke: 'black',
   },
 };
 export const sourceSettings = {
@@ -74,20 +74,18 @@ export const sinkSettings = {
   isTarget: true,
 };
 export const conditionRightEndpoint = {
-  overlays: [
-    ["Label", { id: "yesLabel", label: "Yes", location: [0.5, -0.55] }],
-  ],
+  overlays: [['Label', { id: 'yesLabel', label: 'Yes', location: [0.5, -0.55] }]],
   ...sourceSettings,
 };
 
 export const conditionBottomEndpoint = {
-  anchor: "Bottom",
+  anchor: 'Bottom',
   overlays: [
     [
-      "Label",
+      'Label',
       {
-        id: "noLabel",
-        label: "No",
+        id: 'noLabel',
+        label: 'No',
         location: [0.5, -0.55],
       },
     ],
@@ -97,22 +95,22 @@ export const conditionBottomEndpoint = {
 
 export const dottedConnectionStyle = {
   paintStyle: {
-    dashstyle: "2 4",
+    dashstyle: '2 4',
     lineWidth: 2,
-    outlineColor: "transparent",
+    outlineColor: 'transparent',
     outlineWidth: 4,
-    strokeStyle: "#0099ff",
+    strokeStyle: '#0099ff',
     strokeWidth: 2,
   },
 };
 
 export const selectedConnectionStyle = {
   paintStyle: {
-    dashstyle: "solid",
+    dashstyle: 'solid',
     lineWidth: 4,
-    outlineColor: "transparent",
+    outlineColor: 'transparent',
     outlineWidth: 4,
-    strokeStyle: "#58b7f6",
+    strokeStyle: '#58b7f6',
   },
 };
 

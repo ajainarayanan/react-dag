@@ -6,7 +6,9 @@
   "typings": "dist/react-dag",
   "scripts": {
     "start:dev": "webpack-dev-server",
-    "lib:build": "webpack --config=webpack.config.lib.js"
+    "lib:build": "webpack --config=webpack.config.lib.js",
+    "test": "cypress run",
+    "test:watch": "cypress open"
   },
   "files": [
     "dist",
@@ -31,6 +33,7 @@
     "@types/uuid": "^3.4.3",
     "classnames": "2.2.5",
     "css-loader": "^0.28.7",
+    "cypress": "^3.3.2",
     "dagre": "^0.8.1",
     "fork-ts-checker-webpack-plugin": "^0.2.8",
     "glamor": "^2.20.40",

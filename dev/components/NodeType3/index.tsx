@@ -12,20 +12,25 @@ const nodeStyles = css({
   border: `2px solid ${theme.main.colors.yellow}`,
   cursor: 'pointer',
   height: '105px',
-  left: '200px',
   position: 'absolute',
-  top: '200px',
   width: '105px',
 });
 
 const modEndPointStyles = css({
   '&.bottom': {
     left: '45px',
-    top: '90px',
+    top: '80px',
   },
   '&.right': {
     left: '95px',
+    top: '18px',
   },
+});
+
+const closeButton = css({
+  position: 'absolute',
+  top: '5px',
+  right: '10px',
 });
 
 export default class NodeType3 extends DefaultNode {
@@ -42,6 +47,7 @@ export default class NodeType3 extends DefaultNode {
             ...conditionRightEndpoint,
             isSource: true,
             uuid: `${this.props.id}-condition-right`,
+            cssClass: `${this.props.id}-condition-right`,
           },
           referenceParams: {},
         },
@@ -50,6 +56,7 @@ export default class NodeType3 extends DefaultNode {
           params: {
             ...conditionBottomEndpoint,
             uuid: `${this.props.id}-condition-bottom`,
+            cssClass: `${this.props.id}-condition-bottom`,
           },
           referenceParams: {},
         },
@@ -65,18 +72,28 @@ export default class NodeType3 extends DefaultNode {
     this.props.initNode(initConfig);
   }
 
+  private delete = () => {
+    this.props.onDelete(this.props.id, [
+      `${this.props.id}-condition-right`,
+      `${this.props.id}-condition-bottom`,
+    ]);
+  };
+
   public render() {
     return (
       <div id={this.props.id} className={`${nodeStyles}`} style={this.props.config.style}>
         <div className={`${nodeWrapperStyles}`}>
           {this.props.config.label ? this.props.config.label : this.props.id}
+          <span className={`${closeButton}`} data-cy="close-button" onClick={this.delete}>
+            X
+          </span>
           <div
-            id={`${this.props.id}-right`}
+            id={`${this.props.id}-condition-right`}
             ref={(ref) => (this.rightEndpointRef = ref)}
             className={`${endPointStyles} ${modEndPointStyles} right`}
           />
           <div
-            id={`${this.props.id}-bottom`}
+            id={`${this.props.id}-condition-bottom`}
             ref={(ref) => (this.bottomEndpointRef = ref)}
             className={`${endPointStyles} ${modEndPointStyles} bottom`}
           />

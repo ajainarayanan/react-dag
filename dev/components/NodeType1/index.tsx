@@ -15,7 +15,6 @@ export const endPointStyles = css({
   position: 'absolute',
   top: '25px',
   width: '25px',
-  zIndex: 200001,
 });
 export const nodeWrapperStyles = css({
   alignItems: 'center',
@@ -33,7 +32,6 @@ export const nodeStyles = css({
   height: '100px',
   position: 'absolute',
   width: '200px',
-  zIndex: 20000,
 });
 
 export default class NodeType1 extends DefaultNode {
@@ -49,6 +47,7 @@ export default class NodeType1 extends DefaultNode {
             ...transformSource,
             isSource: true,
             uuid: `${this.props.id}-transform`,
+            cssClass: `${this.props.id}-transform`,
           },
           referenceParams: {},
         },
