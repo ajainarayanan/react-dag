@@ -6,6 +6,7 @@ import * as React from "react";
 export as namespace ReactDAG;
 // export default DAG;
 
+export type endpointUUID = string;
 export interface IEventProps {
   [anyProp: string]: (...args: any[]) => void;
 }
@@ -13,7 +14,7 @@ export interface INodeProps {
   id: string;
   config?: INodeConfig;
   initNode?: (initConfig: IInitNodeProps) => void;
-  onDelete?: () => void;
+  onDelete?: (nodeId: string, endoints: endpointUUID[]) => void;
 }
 export class DefaultNode extends React.Component<INodeProps, {}> {
   static defaultProps: Partial<INodeProps>;
