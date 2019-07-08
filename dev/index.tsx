@@ -18,7 +18,8 @@ import NodeType2 from './components/NodeType2';
 import NodeType3 from './components/NodeType3';
 import { css } from 'glamor';
 import dagre from 'dagre';
-import { data } from './data';
+// import { data } from './data';
+import { complexData as data } from './data';
 import uuidv4 from 'uuid/v4';
 
 /* tslint:disable */
@@ -137,15 +138,20 @@ class App extends React.Component {
     connections: data.connections,
     nodes: data.nodes,
     zoom: 1,
+    loading: false
   };
+  nodeCounter = 0;
   public addNode = (type: string) => {
-    const generateNodeConfig = (t: string) => ({
-      config: {
-        label: `Node Type: ${type} #${Math.ceil(Math.random() * 100)}`,
-        type: t,
-      },
-      id: uuidv4(),
-    });
+    const generateNodeConfig = (t: string) => {
+      this.nodeCounter += 1;
+      return {
+        config: {
+          label: `Node Type: ${type} #${this.nodeCounter}`,
+          type: t,
+        },
+        id: `Node-${this.nodeCounter}`
+      }
+    };
     this.setState({
       nodes: [...this.state.nodes, generateNodeConfig(type)],
     });
@@ -157,7 +163,23 @@ class App extends React.Component {
       this.setState({ zoom: this.state.zoom - 0.2 });
     }
   };
+  public wipeout = () => {
+    this.setState({
+      loading: true,
+      nodes: [],
+      connections: []
+    }, () => {
+      setTimeout(() => {
+        this.setState({
+          loading: false
+        });
+      });
+    });
+  };
   public render() {
+    if (this.state.loading) {
+      return 'Loading ...';
+    }
     return [
       <h1 className={`${headerStyles}`} key="title">
         An example of React DAG
@@ -166,45 +188,57 @@ class App extends React.Component {
         <button
           className={`${buttonStyles} ${nodeType1Styles}`}
           onClick={this.addNode.bind(null, "transform")}
+          id="btn-add-node-type-1"
         >
           Add Node Type 1
         </button>
         <button
           className={`${buttonStyles} ${nodeType2Styles}`}
           onClick={this.addNode.bind(null, "action")}
+          id="btn-add-node-type-2"
         >
           Add Node Type 2
         </button>
         <button
           className={`${buttonStyles} ${nodeType3Styles}`}
           onClick={this.addNode.bind(null, "condition")}
+          id="btn-add-node-type-3"
         >
           Add Node Type 3
         </button>
         <button
           className={`${buttonStyles}`}
           onClick={this.addNode.bind(null, "source")}
+          id="btn-add-node-type-4"
         >
           Add Node Type 4
         </button>
         <button
           className={`${buttonStyles} ${nodeType1Styles}`}
           onClick={this.addNode.bind(null, "sink")}
+          id="btn-add-node-type-5"
         >
           Add Node Type 5
         </button>
         <button
           className={`${buttonStyles}`}
           onClick={this.setZoom.bind(this, true)}
+          id="btn-add-zoom-in"
         >
           Zoom in
         </button>
         <button
           className={`${buttonStyles}`}
           onClick={this.setZoom.bind(this, false)}
+          id="btn-add-zoom-out"
         >
           Zoom out
         </button>
+        <button
+          className={`${buttonStyles}`}
+          onClick={this.wipeout}
+          id="btn-wipeout"
+        >Wipeout</button>
       </div>,
       <DAG
         className={`${dagWrapperStyles}`}
@@ -223,6 +257,7 @@ class App extends React.Component {
         eventListeners={eventListeners}
         registerTypes={registerTypes}
         onChange={({ nodes, connections }) => {
+          console.log('OnChange: ', nodes, connections);
           this.setState({ nodes, connections }); // un-necessary cycle??
         }}
         zoom={this.state.zoom}

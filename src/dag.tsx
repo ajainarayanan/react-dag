@@ -67,6 +67,12 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
   private removeNode = (nodeId: string, endpoints: endpointUUID[]) => {
     endpoints.forEach(this.state.jsPlumbInstance.deleteEndpoint);
     this.state.jsPlumbInstance.deleteConnectionsForElement(nodeId);
+    if (Array.isArray(endpoints)) {
+      endpoints.forEach((endpoint) =>
+        this.state.jsPlumbInstance.deleteConnectionsForElement(endpoint)
+      );
+    }
+
     this.state.jsPlumbInstance.repaintEverything();
     this.setState(
       {
@@ -75,7 +81,10 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
           .map((connObj: { sourceId: string; targetId: string }) => ({
             sourceId: connObj.sourceId,
             targetId: connObj.targetId,
-          })),
+          }))
+          .map((connObj: { sourceId: string; targetId: string }) => {
+            return this.getNewConnectionObj(connObj, this.props.connectionDecoders);
+          }),
         nodes: this.state.nodes.filter((node: INode) => node.id !== nodeId),
       },
       () => {
@@ -219,7 +228,14 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
     if (!element) {
       return;
     }
-    this.state.jsPlumbInstance.addEndpoint(element, params, referenceParams);
+    this.state.jsPlumbInstance.addEndpoint(
+      element,
+      {
+        ...params,
+        connectorClass: 'connector-class',
+      },
+      referenceParams
+    );
   };
 
   public makeNodeDraggable = (id: string) => {
@@ -236,12 +252,14 @@ export default class DAG extends React.Component<IDAGProps, IDAGState> {
     );
     if (newConnObj.data) {
       return {
+        cssClass: 'connector-class',
         data: newConnObj.data || {},
         sourceId: newConnObj.sourceId,
         targetId: newConnObj.targetId,
       };
     }
     return {
+      cssClass: 'connector-class',
       sourceId: newConnObj.sourceId,
       targetId: newConnObj.targetId,
     };

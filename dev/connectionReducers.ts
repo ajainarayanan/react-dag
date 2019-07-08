@@ -1,4 +1,4 @@
-import { IConnectionParams, IConnectionRule, INode } from "../src/models";
+import { IConnectionParams, IConnectionRule, INode } from '../src/models';
 
 export const transformConnectionEncoder: IConnectionRule = (
   connObj: IConnectionParams,
@@ -10,17 +10,21 @@ export const transformConnectionEncoder: IConnectionRule = (
     sourceId: connObj.sourceId,
     targetId: connObj.targetId,
   };
-  const sourceNode = matchingNodes.find(
-    node => node.id === newConnObj.sourceId
-  );
+  const sourceNode = matchingNodes.find((node) => node.id === newConnObj.sourceId);
   if (!sourceNode) {
     return connObj;
   }
   if (
-    ["transform", "sink"].indexOf(sourceNode.config.type) !== -1 &&
-    connObj.sourceId.indexOf("right") === -1
+    ['transform', 'sink'].indexOf(sourceNode.config.type) !== -1 &&
+    connObj.sourceId.indexOf('right') === -1
   ) {
     newConnObj.sourceId = `${connObj.sourceId}-right`;
+  }
+  if (
+    sourceNode.config.type === 'action' &&
+    connObj.sourceId.indexOf('-DottedEndpoint-right') === -1
+  ) {
+    newConnObj.sourceId = `${connObj.sourceId}-DottedEndpoint-right`;
   }
   return newConnObj;
 };
@@ -35,20 +39,25 @@ export const transformConnectionDecoder: IConnectionRule = (
     sourceId: connObj.sourceId,
     targetId: connObj.targetId,
   };
-  const sourceNode = matchingNodes.find(
-    node => connObj.sourceId.indexOf(`${node.id}-`) !== -1
-  );
+  const sourceNode = matchingNodes.find((node) => connObj.sourceId.indexOf(`${node.id}-`) !== -1);
   if (!sourceNode) {
     return connObj;
   }
 
   if (
-    ["transform", "sink"].indexOf(sourceNode.config.type) !== -1 &&
-    connObj.sourceId.indexOf("right") !== -1
+    ['transform', 'sink'].indexOf(sourceNode.config.type) !== -1 &&
+    connObj.sourceId.indexOf('right') !== -1
+  ) {
+    newConnObj.sourceId = `${connObj.sourceId.slice(0, connObj.sourceId.indexOf('-right'))}`;
+  }
+
+  if (
+    sourceNode.config.type === 'action' &&
+    connObj.sourceId.indexOf('-DottedEndpoint-right') !== -1
   ) {
     newConnObj.sourceId = `${connObj.sourceId.slice(
       0,
-      connObj.sourceId.indexOf("-right")
+      connObj.sourceId.indexOf('-DottedEndpoint-right')
     )}`;
   }
   return newConnObj;
@@ -64,18 +73,18 @@ export const conditionConnectionEncoder: IConnectionRule = (
     sourceId: connObj.sourceId,
     targetId: connObj.targetId,
   };
-  const sourceNode = matchingNodes.find(node => connObj.sourceId === node.id);
+  const sourceNode = matchingNodes.find((node) => connObj.sourceId === node.id);
   if (!sourceNode) {
     return connObj;
   }
 
   if (
-    sourceNode.config.type === "condition" &&
-    connObj.sourceId.indexOf("bottom") === -1 &&
-    connObj.sourceId.indexOf("right") === -1
+    sourceNode.config.type === 'condition' &&
+    connObj.sourceId.indexOf('bottom') === -1 &&
+    connObj.sourceId.indexOf('right') === -1
   ) {
     if (connObj.data) {
-      if (connObj.data.condition === "true") {
+      if (connObj.data.condition === 'true') {
         newConnObj.sourceId = `${connObj.sourceId}-right`;
       } else {
         newConnObj.sourceId = `${connObj.sourceId}-bottom`;
@@ -95,31 +104,23 @@ export const conditionConnectionDecoder: IConnectionRule = (
     sourceId: connObj.sourceId,
     targetId: connObj.targetId,
   };
-  const sourceNode = matchingNodes.find(
-    node => connObj.sourceId.indexOf(`${node.id}-`) !== -1
-  );
+  const sourceNode = matchingNodes.find((node) => connObj.sourceId.indexOf(`${node.id}-`) !== -1);
 
   if (!sourceNode) {
     return connObj;
   }
 
-  if (sourceNode.config.type === "condition") {
-    if (connObj.sourceId.indexOf("right") !== -1) {
-      newConnObj.sourceId = `${connObj.sourceId.slice(
-        0,
-        connObj.sourceId.indexOf("-right")
-      )}`;
+  if (sourceNode.config.type === 'condition') {
+    if (connObj.sourceId.indexOf('right') !== -1) {
+      newConnObj.sourceId = `${connObj.sourceId.slice(0, connObj.sourceId.indexOf('-right'))}`;
       newConnObj.data = {
-        condition: "true",
+        condition: 'true',
       };
     }
-    if (connObj.sourceId.indexOf("bottom") !== -1) {
-      newConnObj.sourceId = `${connObj.sourceId.slice(
-        0,
-        connObj.sourceId.indexOf("-bottom")
-      )}`;
+    if (connObj.sourceId.indexOf('bottom') !== -1) {
+      newConnObj.sourceId = `${connObj.sourceId.slice(0, connObj.sourceId.indexOf('-bottom'))}`;
       newConnObj.data = {
-        condition: "false",
+        condition: 'false',
       };
     }
   }
