@@ -119,9 +119,9 @@ in the previous version
 
   An example of a encoder and a decoder can be [found here](https://github.com/ajainarayanan/react-dag/blob/feature/ui-2.0.0.alpha.1/dev/connectionReducers.ts#L57-L127)
 
-- `eventListeners`: Is a key-value map where key represents the event and the value represents the callback to call when the event occurs. This is useful if you want to bind to specific events in jsplumb instance. For a list of possible events please check [jsplumb docs here](https://jsplumbtoolkit.com/community/doc/events.html#jsPlumbEvents)
+- `eventListeners`: Is a key-value map where key represents the event and the value represents the callback to call when the event occurs. This is useful if you want to bind to specific events in jsplumb instance. For a list of possible events please check [jsplumb docs here](http://jsplumb.github.io/jsplumb/events.html)
 
-- `registerTypes`: Is a key-value map where the key represents the type name and the value represents the paint style object. This is useful if you want to set types in jsplumb instance that you can use to style nodes/connections while drawing the graph. jsplumb docs for registerConnection/registerEndpoint types can be [found here](https://jsplumbtoolkit.com/community/apidocs/classes/jsPlumbInstance.html#method_registerConnectionTypes)
+- `registerTypes`: Is a key-value map where the key represents the type name and the value represents the paint style object. This is useful if you want to set types in jsplumb instance that you can use to style nodes/connections while drawing the graph. jsplumb docs for registerConnection/registerEndpoint types can be [found here](https://github.com/jsplumb/jsplumb/wiki/types)
 
 - `zoom`: Is an integer that represents the zoom level of the entire graph.
 
